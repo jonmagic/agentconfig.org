@@ -29,3 +29,6 @@ research/
 # Playwright
 test-results/
 playwright-report/
+
+# Claude local settings
+.claude/
