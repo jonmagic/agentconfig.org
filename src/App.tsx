@@ -3,6 +3,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navigation } from '@/components/Navigation'
 import { Hero } from '@/components/Hero'
 import { Section } from '@/components/Section'
+import { FileTreeSection } from '@/components/FileTree'
 
 export function App(): ReactNode {
   return (
@@ -17,9 +18,7 @@ export function App(): ReactNode {
             title="Interactive File Tree"
             description="See exactly where AI primitive files live in your project. Click on any file to learn more about its purpose and how to configure it."
           >
-            <PlaceholderContent>
-              File Tree visualization coming soon...
-            </PlaceholderContent>
+            <FileTreeSection />
           </Section>
 
           <Section
