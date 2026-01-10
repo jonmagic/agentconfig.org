@@ -1,0 +1,44 @@
+# agentconfig.org
+
+> A reference guide for configuring AI coding assistants like GitHub Copilot and Claude Code. Learn where config files go, what primitives each tool supports, and how to structure your projects for maximum AI effectiveness.
+
+This site helps developers understand:
+
+- The "magic paths" where AI coding assistants look for configuration files
+- Which configuration primitives (instructions, skills, agents, commands) each tool supports
+- The difference between global (user home) and project-level configuration
+- How to write effective instructions, skills, and custom commands
+
+## Docs
+
+- [GitHub Copilot Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills): Official VS Code docs on creating agent skills for Copilot
+- [Claude Code Memory](https://docs.anthropic.com/en/docs/claude-code/memory): How Claude Code uses CLAUDE.md and other memory files
+- [Claude Code Settings](https://docs.anthropic.com/en/docs/claude-code/settings): Claude Code configuration options and paths
+
+## Key Paths
+
+### GitHub Copilot
+
+- Global skills: `~/.copilot/skills/` or `~/.github/skills/`
+- Project instructions: `.github/copilot-instructions.md`
+- Project skills: `.github/skills/<skill-name>/SKILL.md`
+- Project agents: `.github/agents/<name>.agent.md`
+- Path-specific instructions: `.github/instructions/<name>.instructions.md`
+- Prompt templates: `.github/prompts/<name>.prompt.md`
+
+### Claude Code
+
+- Global config: `~/.claude/`
+- Global settings: `~/.claude/settings.json`
+- Global memory: `~/.claude/CLAUDE.md`
+- Global commands: `~/.claude/commands/<name>.md`
+- Global skills: `~/.claude/skills/<skill-name>/SKILL.md`
+- MCP servers: `~/.claude.json`
+- Project memory: `./CLAUDE.md` or `.claude/CLAUDE.md`
+- Project settings: `.claude/settings.json`
+- Project commands: `.claude/commands/<name>.md`
+
+## Optional
+
+- [Agent Skills Spec](https://agentskills.io): Community standard specification for agent skills
+- [awesome-copilot](https://github.com/github/awesome-copilot): Community-curated Copilot resources
