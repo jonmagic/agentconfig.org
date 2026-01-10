@@ -43,7 +43,7 @@ export function App(): ReactNode {
 
         <footer className="border-t border-border py-8">
           <div className="container mx-auto px-4 text-center text-muted-foreground">
-            <p>Built to help you master AI coding assistants.</p>
+            <p>Brought to you by <a href="https://jonmagic.com" className="underline hover:text-foreground transition-colors">jonmagic</a>.</p>
           </div>
         </footer>
       </div>
