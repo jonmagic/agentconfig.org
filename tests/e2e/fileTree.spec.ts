@@ -124,11 +124,19 @@ test.describe('File Tree - Claude Provider', () => {
   })
 
   test('should show Claude-specific file structure', async ({ page }) => {
-    // Should show CLAUDE.md with Project Memory badge at root level
+    // Should show CLAUDE.md with Project Memory badge at root level (in project config section)
     await expect(page.getByRole('button', { name: 'CLAUDE.md Project Memory' })).toBeVisible()
 
-    // Should show .claude folder
-    await expect(page.getByRole('treeitem', { name: /^\.claude$/i })).toBeVisible()
+    // Should show .claude folder in both global and project sections
+    // Check that there are two .claude folders (one global, one project)
+    const claudeFolders = page.getByRole('treeitem', { name: /^\.claude$/i })
+    await expect(claudeFolders).toHaveCount(2)
+
+    // Verify the global section shows ~/.claude
+    await expect(page.getByLabel('Contents of ~').getByRole('treeitem', { name: '.claude' })).toBeVisible()
+
+    // Verify the project section shows .claude
+    await expect(page.getByLabel('Contents of my-project').getByRole('treeitem', { name: '.claude' })).toBeVisible()
   })
 
   test('should display Claude file details when clicked', async ({ page }) => {

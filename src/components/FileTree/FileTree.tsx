@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
-import { trees, type Provider, type FileNode } from '@/data/fileTree'
+import { trees, globalTrees, type Provider, type FileNode } from '@/data/fileTree'
 import { TreeNode } from './TreeNode'
 
 export interface FileTreeProps {
@@ -24,6 +24,7 @@ export function FileTree({
 }: FileTreeProps): ReactNode {
   const [activeProvider, setActiveProvider] = useState<Provider>('copilot')
   const tree = trees[activeProvider]
+  const globalTree = globalTrees[activeProvider]
 
   return (
     <div className={cn('flex flex-col', className)}>
@@ -55,22 +56,51 @@ export function FileTree({
         ))}
       </div>
 
-      {/* Tree panel */}
-      <div
-        id={`tree-panel-${activeProvider}`}
-        role="tabpanel"
-        aria-label={`${activeProvider} file structure`}
-        className={cn(
-          'rounded-xl border border-border bg-card p-4',
-          'overflow-auto max-h-[500px]'
-        )}
-      >
-        <div role="tree" aria-label="Project file structure">
-          <TreeNode
-            node={tree}
-            selectedId={selectedId}
-            onFileClick={onFileClick}
-          />
+      {/* Global config tree panel */}
+      <div className="mb-3">
+        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+          Global Config (User Home)
+        </h4>
+        <div
+          id={`tree-panel-global-${activeProvider}`}
+          role="tabpanel"
+          aria-label={`${activeProvider} global configuration`}
+          className={cn(
+            'rounded-xl border border-border bg-card/50 p-4',
+            'overflow-auto max-h-[250px]'
+          )}
+        >
+          <div role="tree" aria-label="Global configuration structure">
+            <TreeNode
+              node={globalTree}
+              selectedId={selectedId}
+              onFileClick={onFileClick}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Project tree panel */}
+      <div>
+        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+          Project Config (Repository)
+        </h4>
+        <div
+          id={`tree-panel-${activeProvider}`}
+          role="tabpanel"
+          aria-label={`${activeProvider} file structure`}
+          className={cn(
+            'rounded-xl border border-border bg-card p-4',
+            'overflow-auto max-h-[400px]'
+          )}
+        >
+          <div role="tree" aria-label="Project file structure">
+            <TreeNode
+              node={tree}
+              selectedId={selectedId}
+              onFileClick={onFileClick}
+            />
+          </div>
         </div>
       </div>
     </div>

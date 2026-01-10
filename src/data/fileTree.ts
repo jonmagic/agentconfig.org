@@ -28,6 +28,74 @@ export interface FileDetails {
   example: string
 }
 
+export const copilotGlobalTree: FileNode = {
+  id: 'copilot-global-root',
+  name: '~',
+  type: 'folder',
+  children: [
+    {
+      id: 'copilot-global-dotcopilot',
+      name: '.copilot',
+      type: 'folder',
+      children: [
+        {
+          id: 'copilot-global-skills',
+          name: 'skills',
+          type: 'folder',
+          children: [
+            {
+              id: 'copilot-global-skill-git-pr',
+              name: 'git-pr-workflow',
+              type: 'folder',
+              children: [
+                {
+                  id: 'copilot-global-skill-git-pr-file',
+                  name: 'SKILL.md',
+                  type: 'file',
+                  details: {
+                    label: 'Global Skill',
+                    description: 'A personal skill available across all your projects. Great for workflows you use everywhere.',
+                    whatGoesHere: [
+                      'Skill metadata (name, description)',
+                      'Step-by-step instructions',
+                      'Tool usage patterns',
+                      'Common workflows you repeat across repos',
+                    ],
+                    whenLoaded: 'Auto-selected based on task. Available globally regardless of which project you\'re in.',
+                    loadOrder: 1,
+                    example: `---
+name: "git-pr-workflow"
+description: "Create well-formed PRs with conventional commits, proper descriptions, and linked issues. Use when creating or preparing pull requests."
+---
+
+# Git PR Workflow
+
+## Before Creating PR
+1. Ensure all commits follow conventional commit format
+2. Rebase on latest main if needed
+3. Run tests locally
+
+## PR Description Template
+- Summary of changes
+- Link to related issue(s)
+- Testing done
+- Screenshots if UI changes
+
+## Checklist
+- [ ] Tests pass
+- [ ] No console.log statements
+- [ ] Documentation updated if needed`,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
 export const copilotTree: FileNode = {
   id: 'copilot-root',
   name: 'my-project',
@@ -602,7 +670,183 @@ A web application built with React and Node.js.
   ],
 }
 
+export const claudeGlobalTree: FileNode = {
+  id: 'claude-global-root',
+  name: '~',
+  type: 'folder',
+  children: [
+    {
+      id: 'claude-global-dotclaude',
+      name: '.claude',
+      type: 'folder',
+      children: [
+        {
+          id: 'claude-global-settings',
+          name: 'settings.json',
+          type: 'file',
+          details: {
+            label: 'Global Settings',
+            description: 'Personal Claude Code settings that apply across all projects.',
+            whatGoesHere: [
+              'Default model preferences',
+              'Global tool permissions',
+              'Personal behavioral preferences',
+            ],
+            whenLoaded: 'Always loaded. Merged with project-level settings (project takes precedence).',
+            loadOrder: 1,
+            example: `{
+  "permissions": {
+    "allow": ["Read", "Edit", "Bash(git:*)"],
+    "deny": ["Bash(rm -rf *)"]
+  }
+}`,
+          },
+        },
+        {
+          id: 'claude-global-claudemd',
+          name: 'CLAUDE.md',
+          type: 'file',
+          details: {
+            label: 'Global Memory',
+            description: 'Personal instructions that apply to all your Claude Code sessions, regardless of project.',
+            whatGoesHere: [
+              'Your preferred coding style',
+              'Common conventions you follow',
+              'Personal preferences (commit style, testing approach, etc.)',
+            ],
+            whenLoaded: 'Always loaded first, before any project-specific context.',
+            loadOrder: 2,
+            example: `# My Global Claude Preferences
+
+## Commit Style
+- Use conventional commits (feat:, fix:, docs:, etc.)
+- Keep commits atomic and focused
+
+## Code Style
+- Prefer functional programming patterns
+- Always add JSDoc comments to public APIs
+- Use early returns to reduce nesting`,
+          },
+        },
+        {
+          id: 'claude-global-commands',
+          name: 'commands',
+          type: 'folder',
+          children: [
+            {
+              id: 'claude-global-command-pr',
+              name: 'pr.md',
+              type: 'file',
+              details: {
+                label: 'Global Command',
+                description: 'A personal slash command available in all projects. Invoke with /pr in Claude Code.',
+                whatGoesHere: [
+                  'Command instructions',
+                  'Steps Claude should follow',
+                  'Output format preferences',
+                ],
+                whenLoaded: 'User-invoked with /pr. Available globally.',
+                loadOrder: 3,
+                example: `# Create Pull Request
+
+Create a well-formed pull request:
+
+1. Summarize all changes since branching from main
+2. Generate a conventional PR title
+3. Write a description with:
+   - Summary of changes
+   - Testing done
+   - Any breaking changes
+4. Create the PR using gh cli`,
+              },
+            },
+          ],
+        },
+        {
+          id: 'claude-global-skills',
+          name: 'skills',
+          type: 'folder',
+          children: [
+            {
+              id: 'claude-global-skill-review',
+              name: 'code-review',
+              type: 'folder',
+              children: [
+                {
+                  id: 'claude-global-skill-review-file',
+                  name: 'SKILL.md',
+                  type: 'file',
+                  details: {
+                    label: 'Global Skill',
+                    description: 'A personal skill available across all your projects.',
+                    whatGoesHere: [
+                      'Skill metadata (name, description)',
+                      'Review criteria and checklist',
+                      'Common patterns to look for',
+                    ],
+                    whenLoaded: 'Auto-selected when code review tasks are detected.',
+                    loadOrder: 4,
+                    example: `---
+name: "code-review"
+description: "Thorough code review following best practices. Use when reviewing code changes, PRs, or asking for feedback on implementations."
+---
+
+# Code Review Skill
+
+## Review Checklist
+1. **Correctness** - Does it do what it's supposed to?
+2. **Security** - Any vulnerabilities? Input validation?
+3. **Performance** - Any obvious inefficiencies?
+4. **Readability** - Clear naming? Good structure?
+5. **Testing** - Adequate test coverage?
+
+## Common Issues to Flag
+- Hardcoded secrets or credentials
+- Missing error handling
+- N+1 query patterns
+- Unused imports/variables`,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'claude-global-claudejson',
+      name: '.claude.json',
+      type: 'file',
+      details: {
+        label: 'User Config',
+        description: 'Claude Code preferences, OAuth session, MCP server configs, and caches.',
+        whatGoesHere: [
+          'MCP server configurations',
+          'OAuth/authentication state',
+          'Per-project state and caches',
+        ],
+        whenLoaded: 'Always loaded. Manages authentication and MCP connections.',
+        loadOrder: 1,
+        example: `{
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"]
+    }
+  }
+}`,
+      },
+    },
+  ],
+}
+
 export const trees: Record<Provider, FileNode> = {
   copilot: copilotTree,
   claude: claudeTree,
+}
+
+export const globalTrees: Record<Provider, FileNode> = {
+  copilot: copilotGlobalTree,
+  claude: claudeGlobalTree,
 }
