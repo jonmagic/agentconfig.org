@@ -11,17 +11,20 @@ const navItems = [
 ] as const
 
 export interface NavigationProps {
-  className?: string
+  className?: string | undefined
 }
 
 export function Navigation({ className }: NavigationProps): ReactNode {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const handleNavClick = (id: string): void => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string): void => {
+    e.preventDefault()
     setIsMenuOpen(false)
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
+      // Update URL without full navigation
+      window.history.pushState(null, '', `#${id}`)
     }
   }
 
@@ -37,26 +40,28 @@ export function Navigation({ className }: NavigationProps): ReactNode {
         className
       )}
     >
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="/" className="font-bold text-lg">
+      <nav
+        className="container mx-auto px-4 h-16 flex items-center justify-between"
+        aria-label="Main navigation"
+      >
+        <a href="/" className="font-bold text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded">
           agentconfig.org
         </a>
 
         {/* Desktop navigation */}
         <div className="hidden md:flex items-center gap-1">
           {navItems.map((item) => (
-            <button
+            <a
               key={item.id}
-              onClick={() => {
-                handleNavClick(item.id)
-              }}
+              href={`#${item.id}`}
+              onClick={(e) => { handleNavClick(e, item.id) }}
               className={cn(
                 'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                 'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
               )}
             >
               {item.label}
-            </button>
+            </a>
           ))}
           <ThemeToggle className="ml-2" />
         </div>
@@ -72,29 +77,34 @@ export function Navigation({ className }: NavigationProps): ReactNode {
             )}
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile navigation */}
       {isMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background">
+        <div
+          id="mobile-menu"
+          className="md:hidden border-t border-border bg-background"
+          role="menu"
+        >
           <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                onClick={() => {
-                  handleNavClick(item.id)
-                }}
+                href={`#${item.id}`}
+                role="menuitem"
+                onClick={(e) => { handleNavClick(e, item.id) }}
                 className={cn(
                   'px-4 py-3 rounded-lg text-left font-medium transition-colors',
                   'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                 )}
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </div>
         </div>

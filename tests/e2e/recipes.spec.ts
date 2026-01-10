@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('Work Type Recipes', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    // Navigate to recipes section
-    await page.getByRole('link', { name: 'Recipes' }).click()
+    // Navigate to recipes section using nav link
+    await page.getByLabel('Main navigation').getByRole('link', { name: 'Recipes' }).click()
   })
 
   test('should display all six recipe cards', async ({ page }) => {

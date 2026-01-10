@@ -15,11 +15,11 @@ export function Hero({ className }: HeroProps): ReactNode {
     >
       <div className="container mx-auto px-4">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          AI Primitives Guide
+          Master AI Assistants
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-          Learn where to place configuration files for GitHub Copilot and Claude Code.
-          Choose your preferred way to explore the primitives below.
+          Configure GitHub Copilot and Claude Code for any role or workflow.
+          Explore the primitives that unlock their full potential.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <NavPill href="#file-tree">File Tree</NavPill>

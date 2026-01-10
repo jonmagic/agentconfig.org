@@ -13,15 +13,16 @@ test.describe('Navigation', () => {
     test.use({ viewport: { width: 1280, height: 720 } })
 
     test('should display all navigation links', async ({ page }) => {
-      await expect(page.getByRole('button', { name: 'File Tree' })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Primitives' })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Recipes' })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Comparison' })).toBeVisible()
+      const nav = page.getByLabel('Main navigation')
+      await expect(nav.getByRole('link', { name: 'File Tree' })).toBeVisible()
+      await expect(nav.getByRole('link', { name: 'Primitives' })).toBeVisible()
+      await expect(nav.getByRole('link', { name: 'Recipes' })).toBeVisible()
+      await expect(nav.getByRole('link', { name: 'Comparison' })).toBeVisible()
     })
 
     test('should scroll to section when nav link is clicked', async ({ page }) => {
-      const navButton = page.getByRole('button', { name: 'Primitives' })
-      await navButton.click()
+      const navLink = page.getByLabel('Main navigation').getByRole('link', { name: 'Primitives' })
+      await navLink.click()
 
       // Wait for scroll to complete
       await page.waitForTimeout(500)
@@ -43,7 +44,7 @@ test.describe('Navigation', () => {
       const menuButton = page.getByRole('button', { name: 'Open menu' })
       await menuButton.click()
 
-      await expect(page.getByRole('button', { name: 'File Tree' })).toBeVisible()
+      await expect(page.getByRole('menuitem', { name: 'File Tree' })).toBeVisible()
       await expect(page.getByRole('button', { name: 'Close menu' })).toBeVisible()
     })
 
@@ -51,8 +52,8 @@ test.describe('Navigation', () => {
       const menuButton = page.getByRole('button', { name: 'Open menu' })
       await menuButton.click()
 
-      const navButton = page.getByRole('button', { name: 'Recipes' })
-      await navButton.click()
+      const navLink = page.getByRole('menuitem', { name: 'Recipes' })
+      await navLink.click()
 
       // Menu should close
       await expect(page.getByRole('button', { name: 'Open menu' })).toBeVisible()

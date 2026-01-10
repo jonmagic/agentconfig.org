@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('File Tree', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    // Navigate to file tree section
-    await page.getByRole('link', { name: 'File Tree' }).click()
+    // Navigate to file tree section using nav link
+    await page.getByLabel('Main navigation').getByRole('link', { name: 'File Tree' }).click()
   })
 
   test('should display provider tabs', async ({ page }) => {
@@ -118,7 +118,7 @@ test.describe('File Tree', () => {
 test.describe('File Tree - Claude Provider', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('link', { name: 'File Tree' }).click()
+    await page.getByLabel('Main navigation').getByRole('link', { name: 'File Tree' }).click()
     // Switch to Claude
     await page.getByRole('tab', { name: /Claude Code/i }).click()
   })

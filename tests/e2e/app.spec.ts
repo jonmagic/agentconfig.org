@@ -4,13 +4,13 @@ test.describe('App', () => {
   test('should load the home page', async ({ page }) => {
     await page.goto('/')
 
-    await expect(page).toHaveTitle(/AI Primitives Guide/)
+    await expect(page).toHaveTitle(/Master AI Coding Assistants/)
   })
 
   test('should render the main heading', async ({ page }) => {
     await page.goto('/')
 
-    await expect(page.getByRole('heading', { name: 'AI Primitives Guide' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Master AI Assistants' })).toBeVisible()
   })
 
   test('should display all four section placeholders', async ({ page }) => {
