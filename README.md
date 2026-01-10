@@ -61,7 +61,7 @@ bun run build
 
 ## Contributing
 
-Contributions welcome! This project does not use GitHub Issues — if you notice incorrect or outdated information about Copilot or Claude configuration paths, please open a pull request directly.
+Contributions welcome! This project does not use GitHub Issues — if you notice anything incorrect or outdated, please open a pull request directly.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 

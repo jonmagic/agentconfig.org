@@ -4,7 +4,7 @@ Thanks for your interest in contributing! This project tracks configuration path
 
 ## Pull Requests Only
 
-This project does not use GitHub Issues. If you find something wrong or want to suggest an improvement, please open a pull request directly.
+This project does not use GitHub Issues. If you find something incorrect or outdated, or want to suggest an improvement, please open a pull request directly.
 
 ## What to Contribute
 
