@@ -75,7 +75,7 @@ export function SkillsPage(): VNode {
           </aside>
 
           {/* Tutorial content */}
-          <main className="min-w-0">
+          <main className="min-w-0 max-w-3xl">
             {/* Concepts sections */}
             <div className="mb-16">
               <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-8">

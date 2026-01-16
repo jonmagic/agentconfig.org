@@ -34,9 +34,9 @@ export function AgentsPage(): VNode {
 
       {/* Main Content with Sidebar */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Sidebar - Table of Contents */}
-          <aside className="lg:w-64 flex-shrink-0">
+          <aside className="lg:w-[260px] flex-shrink-0">
             <div className="lg:sticky lg:top-24">
               <TableOfContents items={tocItems} />
             </div>

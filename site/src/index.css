@@ -91,3 +91,9 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@layer utilities {
+  .container {
+    max-width: 69.25rem;
+  }
+}
