@@ -1,4 +1,4 @@
-import type { VNode, ComponentChildren } from 'preact'
+import type { VNode } from 'preact'
 import type { JSX } from 'preact'
 import { cn } from '@/lib/utils'
 
@@ -6,43 +6,28 @@ export interface HeroProps {
   className?: string
 }
 
+const navItems = [
+  {
+    href: '#primitives',
+    label: 'Primitives',
+    className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  },
+  {
+    href: '#file-tree',
+    label: 'File Tree',
+    className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+  },
+  {
+    href: '#comparison',
+    label: 'Comparison',
+    className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+  },
+] as const
+
 export function Hero({ className }: HeroProps): VNode {
-  return (
-    <div
-      className={cn(
-        'py-16 md:py-24 text-center',
-        className
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          Master AI Assistants
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-          Configure GitHub Copilot and Claude Code for any role or workflow.
-          Explore the primitives that unlock their full potential, then learn how to{' '}
-          <a href="https://thisistheway.to/ai" className="underline hover:text-foreground transition-colors">
-            improve AI agents through systematic failure analysis
-          </a>.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <NavPill href="#primitives">Primitives</NavPill>
-          <NavPill href="#file-tree">File Tree</NavPill>
-          <NavPill href="#comparison">Comparison</NavPill>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface NavPillProps {
-  href: string
-  children: ComponentChildren
-}
-
-function NavPill({ href, children }: NavPillProps): VNode {
-  const handleClick = (e: JSX.TargetedMouseEvent<HTMLAnchorElement>): void => {
-    e.preventDefault()
+  const handleClick = (event: JSX.TargetedMouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault()
+    const href = event.currentTarget.getAttribute('href') ?? ''
     const id = href.replace('#', '')
     const element = document.getElementById(id)
     if (element) {
@@ -51,17 +36,35 @@ function NavPill({ href, children }: NavPillProps): VNode {
   }
 
   return (
-    <a
-      href={href}
-      onClick={handleClick}
-      className={cn(
-        'px-6 py-3 rounded-full font-medium transition-all',
-        'bg-card border border-border',
-        'hover:bg-muted hover:border-primary/50',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-      )}
-    >
-      {children}
-    </a>
+    <header className={cn('border-b border-border bg-muted/30', className)}>
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          Master AI Assistants
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl mb-6">
+          Configure GitHub Copilot and Claude Code for any role or workflow.
+          Explore the primitives that unlock their full potential, then learn how to{' '}
+          <a href="https://thisistheway.to/ai" className="underline hover:text-foreground transition-colors">
+            improve AI agents through systematic failure analysis
+          </a>.
+        </p>
+        <div className="flex gap-2 flex-wrap">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={handleClick}
+              className={cn(
+                'px-3 py-1 rounded-full text-sm font-medium transition-colors',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                item.className
+              )}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </header>
   )
 }
