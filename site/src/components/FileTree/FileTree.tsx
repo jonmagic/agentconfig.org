@@ -67,8 +67,7 @@ export function FileTree({
           role="tabpanel"
           aria-label={`${activeProvider} global configuration`}
           className={cn(
-            'rounded-xl border border-border bg-card/50 p-4',
-            'overflow-auto max-h-[250px]'
+            'rounded-xl border border-border bg-card/50 p-4'
           )}
         >
           <div role="tree" aria-label="Global configuration structure">
@@ -91,8 +90,7 @@ export function FileTree({
           role="tabpanel"
           aria-label={`${activeProvider} file structure`}
           className={cn(
-            'rounded-xl border border-border bg-card p-4',
-            'overflow-auto max-h-[400px]'
+            'rounded-xl border border-border bg-card p-4'
           )}
         >
           <div role="tree" aria-label="Project file structure">
