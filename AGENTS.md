@@ -103,6 +103,63 @@ Project-specific skills are in `.github/skills/`. These work with both Copilot a
 | [semantic-commit](.github/skills/semantic-commit/SKILL.md) | Creating commit messages |
 | [co-author](.github/skills/co-author/SKILL.md) | Co-author attribution |
 
+## Multi-Agent Coordination
+
+Multiple agents may work on this project simultaneously. To avoid conflicts:
+
+### Agent Activity Log
+
+A shared coordination file `.agent-activity.log` tracks what each agent is working on. This file is gitignored and append-only.
+
+**Log format** (one entry per line):
+```
+<timestamp> <action> <agent-id> <resource> [message]
+```
+
+**Actions:**
+- `LOCK` - Agent is claiming exclusive access to a resource
+- `UNLOCK` - Agent is releasing a resource
+- `WORKING` - Agent is actively working (no lock needed)
+- `COMMIT_START` - Agent is beginning a commit (locks staging area)
+- `COMMIT_END` - Agent has finished committing
+
+**Examples:**
+```
+2026-01-16T18:30:00Z LOCK agent-abc123 site/src/components/Header/ starting header refactor
+2026-01-16T18:45:00Z COMMIT_START agent-abc123 git-staging committing header changes
+2026-01-16T18:45:30Z COMMIT_END agent-abc123 git-staging
+2026-01-16T18:45:31Z UNLOCK agent-abc123 site/src/components/Header/
+```
+
+**Before starting work:**
+1. Read the last 20 lines of `.agent-activity.log` (use `tail -20`)
+2. Check if any `LOCK` entries exist without a corresponding `UNLOCK` for your target files
+3. If locked, work on something else or wait
+4. If clear, add your own `LOCK` or `WORKING` entry
+
+**Before committing:**
+1. Add a `COMMIT_START` entry to lock the staging area
+2. Stage ONLY the files related to your specific change
+3. Create the commit with proper semantic message
+4. Add a `COMMIT_END` entry
+5. Add `UNLOCK` entries for any files you had locked
+
+### Stay In Your Lane
+
+- Each agent should focus on a single, well-defined task
+- Do not modify files another agent has locked
+- Do not stage files that aren't part of your current task
+- If you discover related work needed, note it but don't do it—let another agent handle it
+
+### Commit Isolation
+
+**Critical:** Each commit must contain ONLY files related to that specific change.
+
+- Before `git add`, verify each file belongs to your current task
+- Never use `git add .` or `git add -A`—always stage files explicitly
+- If you accidentally stage unrelated files, unstage them before committing
+- Use `git status` to review staged files before every commit
+
 ## Commit Guidelines
 
 Follow semantic commit conventions. See [semantic-commit skill](.github/skills/semantic-commit/SKILL.md) for complete format, types, scopes, and examples.

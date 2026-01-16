@@ -33,3 +33,6 @@ site/playwright-report/
 
 # Claude local settings
 .claude/*.local.json
+
+# Agent coordination log (multi-agent synchronization)
+.agent-activity.log
