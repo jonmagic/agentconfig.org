@@ -81,26 +81,36 @@ function parseMarkdown(text: string): string {
     '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:no-underline">$1</a>'
   )
 
-  // Tables
-  html = html.replace(/^\|(.+)\|$/gm, (_match, row: string) => {
-    const cells = row.split('|').map((cell: string) => cell.trim())
-    const cellHtml = cells.map((cell: string) => `<td class="border border-border px-3 py-2">${cell}</td>`).join('')
-    return `<tr>${cellHtml}</tr>`
-  })
-  html = html.replace(/(<tr>[\s\S]*?<\/tr>)+/g, (tableMatch) => {
-    // Check if first row is header (has --- pattern)
-    const rows = tableMatch.split('</tr>').filter(Boolean)
-    if (rows.length > 1 && rows[1]?.includes('---')) {
-      const headerRow = (rows[0] ?? '').replace(/<td/g, '<th').replace(/<\/td>/g, '</th>')
-      const bodyRows = rows.slice(2).join('</tr>')
-      return `<table class="w-full border-collapse mb-4"><thead>${headerRow}</tr></thead><tbody>${bodyRows}</tbody></table>`
-    }
-    return `<table class="w-full border-collapse mb-4"><tbody>${tableMatch}</tbody></table>`
+  // Tables - detect markdown tables and convert to HTML
+  // Match table blocks: consecutive lines starting and ending with |
+  html = html.replace(/(?:^\|.+\|$\n?)+/gm, (tableBlock) => {
+    const rows = tableBlock.trim().split('\n')
+    if (rows.length < 2) return tableBlock
+
+    // Check if second row is separator (contains only |, -, :, and spaces)
+    const isSeparator = /^\|[\s\-:|]+\|$/.test(rows[1] ?? '')
+    if (!isSeparator) return tableBlock
+
+    const headerCells = (rows[0] ?? '').split('|').slice(1, -1).map(c => c.trim())
+    const headerHtml = headerCells.map(c => `<th class="border border-border px-3 py-2 text-left font-semibold">${c}</th>`).join('')
+
+    const bodyRows = rows.slice(2).map(row => {
+      const cells = row.split('|').slice(1, -1).map(c => c.trim())
+      const cellsHtml = cells.map(c => `<td class="border border-border px-3 py-2">${c}</td>`).join('')
+      return `<tr>${cellsHtml}</tr>`
+    }).join('')
+
+    return `<table class="w-full border-collapse mb-4"><thead><tr>${headerHtml}</tr></thead><tbody>${bodyRows}</tbody></table>`
   })
 
   // Unordered lists
   html = html.replace(/^- (.+)$/gm, '<li class="ml-4">$1</li>')
   html = html.replace(/(<li[^>]*>.*<\/li>\n?)+/g, '<ul class="list-disc list-outside mb-4 space-y-1">$&</ul>')
+
+  // Ordered lists (1. 2. 3. etc)
+  html = html.replace(/^\d+\. (.+)$/gm, '<oli>$1</oli>')
+  html = html.replace(/(<oli>.*<\/oli>\n?)+/g, '<ol class="list-decimal list-outside ml-4 mb-4 space-y-1">$&</ol>')
+  html = html.replace(/<oli>/g, '<li class="ml-4">').replace(/<\/oli>/g, '</li>')
 
   // Paragraphs (double newlines)
   html = html.replace(/\n\n/g, '</p><p class="mb-4">')
@@ -110,8 +120,8 @@ function parseMarkdown(text: string): string {
   html = html.replace(/<p class="mb-4"><\/p>/g, '')
   html = html.replace(/<p class="mb-4">(<h[23])/g, '$1')
   html = html.replace(/(<\/h[23]>)<\/p>/g, '$1')
-  html = html.replace(/<p class="mb-4">(<ul|<table)/g, '$1')
-  html = html.replace(/(<\/ul>|<\/table>)<\/p>/g, '$1')
+  html = html.replace(/<p class="mb-4">(<ul|<ol|<table)/g, '$1')
+  html = html.replace(/(<\/ul>|<\/ol>|<\/table>)<\/p>/g, '$1')
 
   return html
 }

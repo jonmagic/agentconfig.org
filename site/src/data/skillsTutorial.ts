@@ -143,11 +143,8 @@ The agent loads these progressively—only when the SKILL.md body references the
 **How to stay lean:**
 
 1. **Move reference material** → Put style guides, examples, and documentation in \`references/\`
-
 2. **Extract executable logic** → CLI tools and validators go in \`scripts/\`
-
 3. **Split large skills** → If a skill does 5 things, maybe it's 5 skills
-
 4. **Use progressive loading** → Reference external files instead of embedding content
 
 **Before (500+ lines in SKILL.md):**

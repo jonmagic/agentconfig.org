@@ -29,11 +29,6 @@ const resources: readonly ResourceLink[] = [
     url: 'https://github.com/anthropics/skills',
     description: 'Example skills from Anthropic, including the skill-creator for building your own.',
   },
-  {
-    title: 'Example Skills Tutorial',
-    url: 'https://github.com/github/jonmagic-ai-tutorial/tree/main/.github/skills',
-    description: 'Real-world skill examples from the Safety & Integrity team workshop.',
-  },
 ]
 
 export interface FurtherReadingProps {

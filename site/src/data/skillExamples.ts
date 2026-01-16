@@ -230,7 +230,7 @@ fi`,
       'Keep scripts simple and focused on data retrieval',
       'Use assets for templates the agent should use verbatim',
     ],
-    sourceUrl: 'https://github.com/github/jonmagic-ai-tutorial/tree/main/.github/skills',
+    sourceUrl: 'https://github.com/anthropics/skills',
   },
   {
     id: 'weekly-snippets',
@@ -322,7 +322,7 @@ See \`references/format-guide.md\` for section templates and examples.`,
       'Skills can be interactive, guiding the user through steps',
       'Reference other skills for consistent voice and context',
     ],
-    sourceUrl: 'https://github.com/github/jonmagic-ai-tutorial/tree/main/.github/skills',
+    sourceUrl: 'https://github.com/anthropics/skills',
   },
   {
     id: 'visual-ui-qa',
@@ -344,6 +344,13 @@ description: Analyze UI screenshots for visual defects, accessibility issues, an
 
 Perform visual quality assurance on UI screenshots using multimodal analysis.
 
+## Requirements
+
+This skill requires multimodal (vision) capability. If your agent doesn't support image analysis natively, use the \`scripts/analyze-screenshot.sh\` script which calls a vision model via the \`llm\` CLI.
+
+If analysis fails, inform the user:
+> "I'm unable to analyze this screenshot. To enable visual analysis, install the llm CLI (https://llm.datasette.io) and run: \`scripts/analyze-screenshot.sh <image-path>\`"
+
 ## Capabilities
 
 - Detect visual regressions between baseline and current
@@ -353,8 +360,8 @@ Perform visual quality assurance on UI screenshots using multimodal analysis.
 
 ## Process
 
-### 1. Receive Screenshot
-Accept screenshot as image input or file path.
+### 1. Capture or Receive Screenshot
+Use \`scripts/capture-screenshot.js <url>\` or accept an image path from the user.
 
 ### 2. Analyze Visual Elements
 
@@ -388,11 +395,7 @@ Use template from \`assets/report-template.md\`:
 
 ## Severity Definitions
 
-See \`references/severity-guide.md\` for classification criteria.
-
-## Integration
-
-For automated CI integration, use \`scripts/capture-screenshot.js\` to capture consistent screenshots.`,
+See \`references/severity-guide.md\` for classification criteria.`,
       },
       {
         path: 'references/severity-guide.md',
@@ -426,19 +429,18 @@ For automated CI integration, use \`scripts/capture-screenshot.js\` to capture c
  * Usage: capture-screenshot.js <url> [--viewport=1280x720] [--output=screenshot.png]
  */
 
-const puppeteer = require('puppeteer')
+const { chromium } = require('playwright')
 
 async function captureScreenshot(url, options = {}) {
   const viewport = options.viewport || { width: 1280, height: 720 }
   const output = options.output || 'screenshot.png'
 
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
+  const browser = await chromium.launch()
+  const page = await browser.newPage({ viewport })
 
-  await page.setViewport(viewport)
-  await page.goto(url, { waitUntil: 'networkidle2' })
+  await page.goto(url, { waitUntil: 'networkidle' })
 
-  // Wait for fonts and images to load
+  // Wait for fonts to load
   await page.evaluate(() => document.fonts.ready)
 
   await page.screenshot({
@@ -458,6 +460,30 @@ if (!url) {
 }
 
 captureScreenshot(url)`,
+      },
+      {
+        path: 'scripts/analyze-screenshot.sh',
+        language: 'bash',
+        content: `#!/bin/bash
+# Analyze a screenshot using a vision model via the llm CLI
+# Usage: analyze-screenshot.sh <image-path> [prompt]
+# Requires: llm CLI (https://llm.datasette.io) with a vision model configured
+
+IMAGE="$1"
+PROMPT="\${2:-Analyze this UI screenshot for visual defects, accessibility issues, and design consistency. Report findings by severity (critical, major, minor).}"
+
+if [[ -z "$IMAGE" ]]; then
+  echo "Usage: analyze-screenshot.sh <image-path> [prompt]"
+  exit 1
+fi
+
+if ! command -v llm &> /dev/null; then
+  echo "Error: llm CLI not found. Install from https://llm.datasette.io"
+  exit 1
+fi
+
+# Use llm with attachment flag for image input
+llm -m gpt-4o "$PROMPT" -a "$IMAGE"`,
       },
       {
         path: 'assets/report-template.md',
@@ -496,9 +522,9 @@ captureScreenshot(url)`,
     ],
     keyTakeaways: [
       'Skills can accept multimodal input (images)',
-      'Complex skills break down into clear phases',
-      'Use severity classifications for actionable output',
-      'Scripts can integrate with external tools (Puppeteer)',
+      'Gracefully degrade when capabilities are missing',
+      'Use CLI tools like llm to add vision to any agent',
+      'Scripts can integrate with external tools (Playwright, llm)',
     ],
     sourceUrl: 'https://github.com/anthropics/skills',
   },
