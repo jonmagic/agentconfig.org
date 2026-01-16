@@ -132,3 +132,19 @@ Key files to understand the project:
 - `src/data/` - Content data (primitives, file trees, recipes)
 - `tests/e2e/` - Playwright test files
 - `tailwind.config.ts` - Theme configuration
+
+## Contributors
+
+- **Jonathan Hoyt** (jon, jonathan, jonmagic): `Jonathan Hoyt <jonmagic@gmail.com>`
+- **Francis Brero** (francis, francisfuzz): `francisfuzz <15894826+francisfuzz@users.noreply.github.com>`
+
+When a contributor asks you to commit and mentions they paired or worked with another contributor (by name or alias), include a `Co-authored-by:` trailer in the commit message body.
+
+**Important**: Only add `Co-authored-by` for human contributors listed above. Never add AI agents (Claude, Copilot, ChatGPT, etc.) as co-authors.
+
+Example:
+```
+feat(hero): update tagline
+
+Co-authored-by: francisfuzz <15894826+francisfuzz@users.noreply.github.com>
+```
