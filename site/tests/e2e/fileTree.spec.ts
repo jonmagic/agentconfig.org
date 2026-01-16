@@ -61,7 +61,11 @@ test.describe('File Tree', () => {
   })
 
   test('should display file details when clicking a file', async ({ page }) => {
-    // copilot-instructions.md should be visible (depth 2 is expanded by default)
+    // First expand .github folder (only root is expanded by default)
+    const githubFolder = page.getByRole('treeitem', { name: /\.github/ })
+    await githubFolder.click()
+
+    // Now copilot-instructions.md should be visible
     // The file button includes its badge text in the accessible name
     const instructionsFile = page.getByRole('button', { name: /copilot-instructions\.md.*Repo Instructions/i })
     await instructionsFile.click()
@@ -74,6 +78,10 @@ test.describe('File Tree', () => {
   })
 
   test('should show load order in file details', async ({ page }) => {
+    // First expand .github folder
+    const githubFolder = page.getByRole('treeitem', { name: /\.github/ })
+    await githubFolder.click()
+
     // Click on a file with the badge
     const instructionsFile = page.getByRole('button', { name: /copilot-instructions\.md.*Repo Instructions/i })
     await instructionsFile.click()
@@ -83,6 +91,10 @@ test.describe('File Tree', () => {
   })
 
   test('should have copy button for example content', async ({ page }) => {
+    // First expand .github folder
+    const githubFolder = page.getByRole('treeitem', { name: /\.github/ })
+    await githubFolder.click()
+
     // Click on a file
     const instructionsFile = page.getByRole('button', { name: /copilot-instructions\.md.*Repo Instructions/i })
     await instructionsFile.click()
@@ -92,6 +104,10 @@ test.describe('File Tree', () => {
   })
 
   test('should display badges on files with details', async ({ page }) => {
+    // First expand .github folder (only root is expanded by default)
+    const githubFolder = page.getByRole('treeitem', { name: /\.github/ })
+    await githubFolder.click()
+
     // Files with details should have badges visible
     // copilot-instructions.md has "Repo Instructions" badge
     await expect(page.getByRole('button', { name: /copilot-instructions\.md.*Repo Instructions/i })).toBeVisible()

@@ -22,10 +22,19 @@ export function TreeNode({
   selectedId,
   onFileClick,
 }: TreeNodeProps): VNode {
-  const [isExpanded, setIsExpanded] = useState(depth < 2)
+  const [isExpanded, setIsExpanded] = useState(depth === 0)
   const isFolder = node.type === 'folder'
   const isSelected = selectedId === node.id
   const hasChildren = isFolder && node.children && node.children.length > 0
+
+  // Sort children: folders first, then files (like VS Code)
+  const sortedChildren = hasChildren && node.children
+    ? [...node.children].sort((a, b) => {
+        if (a.type === 'folder' && b.type !== 'folder') return -1
+        if (a.type !== 'folder' && b.type === 'folder') return 1
+        return 0
+      })
+    : []
 
   const handleClick = () => {
     if (isFolder) {
@@ -103,9 +112,9 @@ export function TreeNode({
       </div>
 
       {/* Children */}
-      {isFolder && hasChildren && isExpanded && node.children && (
+      {isFolder && hasChildren && isExpanded && (
         <div role="group" aria-label={`Contents of ${node.name}`}>
-          {node.children.map((child) => (
+          {sortedChildren.map((child) => (
             <TreeNode
               key={child.id}
               node={child}
