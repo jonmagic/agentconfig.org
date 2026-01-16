@@ -25,7 +25,7 @@ export function SkillsPage(): VNode {
   const activeSection = useActiveSection({ sectionIds: allSectionIds })
 
   return (
-    <PageLayout>
+    <PageLayout llmsPath="/skills.md">
       <SkillsHero />
 
       {/* Mobile sidebar toggle */}

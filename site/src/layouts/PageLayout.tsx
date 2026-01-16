@@ -4,9 +4,13 @@ import { Navigation } from '@/components/Navigation'
 
 export interface PageLayoutProps {
   children: ComponentChildren
+  llmsPath?: string
 }
 
-export function PageLayout({ children }: PageLayoutProps): VNode {
+export function PageLayout({ children, llmsPath = '/llms.txt' }: PageLayoutProps): VNode {
+  // Extract filename from path for display
+  const llmsFilename = llmsPath.split('/').pop() ?? 'llms.txt'
+  
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
@@ -19,7 +23,9 @@ export function PageLayout({ children }: PageLayoutProps): VNode {
           <div className="container mx-auto px-4 text-center text-muted-foreground">
             <p>Brought to you by <a href="https://jonmagic.com" className="underline hover:text-foreground transition-colors">jonmagic</a>.</p>
             <p className="mt-2 text-sm">
-              <a href="/llms.txt" className="hover:text-foreground transition-colors">llms.txt</a>
+              <a href={llmsPath} className="hover:text-foreground transition-colors">{llmsFilename}</a>
+              <span className="mx-2 text-muted-foreground">·</span>
+              <a href="/llms-full.txt" className="hover:text-foreground transition-colors">llms-full.txt</a>
             </p>
           </div>
         </footer>

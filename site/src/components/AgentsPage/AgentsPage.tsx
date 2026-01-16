@@ -7,7 +7,7 @@ import { tocItems, furtherReadingLinks, codeSamples } from '@/data/agentsTutoria
 
 export function AgentsPage(): VNode {
   return (
-    <PageLayout>
+    <PageLayout llmsPath="/agents.md">
       {/* Hero Section */}
       <header className="border-b border-border bg-muted/30">
         <div className="container mx-auto px-4 py-12 md:py-16">
