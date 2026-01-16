@@ -92,37 +92,18 @@ bun run test         # Run Playwright E2E tests
 
 ## Commit Guidelines
 
-Follow semantic commit conventions strictly.
+Follow semantic commit conventions. See [semantic-commit skill](.github/skills/semantic-commit/SKILL.md) for complete format, types, scopes, and examples.
 
-**Format:** `<type>(<scope>): <description>`
+**Quick reference:**
+- Format: `<type>(<scope>): <description>`
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- Keep commits atomic—one logical change per commit
 
-**Types:**
-- `feat` - New feature
-- `fix` - Bug fix
-- `docs` - Documentation only
-- `style` - Formatting, no code change
-- `refactor` - Code restructuring, no behavior change
-- `test` - Adding or updating tests
-- `chore` - Maintenance, config, dependencies
+## Contributors
 
-**Rules:**
-1. Keep commits atomic—one logical change per commit
-2. Minimize files per commit—prefer multiple small commits over one large commit
-3. Write clear, descriptive commit messages
-4. Always include scope when applicable
-5. Description should complete: "This commit will..."
+See [co-author skill](.github/skills/co-author/SKILL.md) for contributor list and co-author formatting rules.
 
-**Good examples:**
-- `feat(file-tree): add collapsible tree node component`
-- `test(navigation): add smooth scroll behavior tests`
-- `fix(theme): correct dark mode background color`
-
-**Bad examples:**
-- `update stuff` (vague)
-- `feat: add file tree and cards and recipes` (too many changes)
-- `WIP` (incomplete)
-
-## Verification Checklist
+**Quick rule:** Add `Co-authored-by:` trailer when pair programming. Never add AI agents as co-authors.
 
 Before considering any task complete:
 
@@ -170,18 +151,3 @@ Before considering any task complete:
 The `/research` folder contains documentation about AI primitives:
 - `05-ai-primitives-realistic-project-trees.md` - Primary source for file tree visualization
 - `03-ai-primitives-playbook-and-provider-mapping.md` - Source for primitives and recipes
-
-## Contributors
-
-- **Jonathan Hoyt** (jon, jonathan, jonmagic): `Jonathan Hoyt <jonmagic@gmail.com>`
-- **Francis Brero** (francis, francisfuzz): `francisfuzz <15894826+francisfuzz@users.noreply.github.com>`
-
-When committing with a co-author, add a `Co-authored-by:` trailer:
-
-```
-feat(hero): update tagline
-
-Co-authored-by: francisfuzz <15894826+francisfuzz@users.noreply.github.com>
-```
-
-**Important**: Only add `Co-authored-by` for human contributors listed above. Never add AI agents as co-authors.
