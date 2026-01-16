@@ -34,7 +34,7 @@ test.describe('Primitive Cards', () => {
 
     // Should see customization primitives
     await expect(page.getByRole('heading', { name: 'Persistent Instructions' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Prompt Templates' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Slash Commands' })).toBeVisible()
 
     // Should NOT see capability primitives
     await expect(page.getByRole('heading', { name: 'Agent Mode' })).not.toBeVisible()
@@ -57,7 +57,7 @@ test.describe('Primitive Cards', () => {
     await controlTab.click()
 
     // Should see control primitives
-    await expect(page.getByRole('heading', { name: 'Guardrails' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Permissions & Guardrails' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Verification / Evals' })).toBeVisible()
   })
 
@@ -128,13 +128,13 @@ test.describe('Primitive Cards', () => {
 
     // Should see all primitives again
     await expect(page.getByRole('heading', { name: 'Persistent Instructions' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Guardrails' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Permissions & Guardrails' })).toBeVisible()
   })
 
   test('should show category counts in filter tabs', async ({ page }) => {
-    // Check that tabs show counts (except All) - 3 capability, 3 customization, 3 control
+    // Check that tabs show counts (except All) - 3 capability, 4 customization, 4 control
     await expect(page.getByRole('tab', { name: /Capability.*\(3\)/i })).toBeVisible()
-    await expect(page.getByRole('tab', { name: /Customization.*\(3\)/i })).toBeVisible()
-    await expect(page.getByRole('tab', { name: /Control.*\(3\)/i })).toBeVisible()
+    await expect(page.getByRole('tab', { name: /Customization.*\(4\)/i })).toBeVisible()
+    await expect(page.getByRole('tab', { name: /Control.*\(4\)/i })).toBeVisible()
   })
 })

@@ -92,7 +92,7 @@ export const primitives: Primitive[] = [
   },
   {
     id: 'tool-integrations',
-    name: 'Tool Integrations',
+    name: 'Tool Integrations (MCP)',
     description: 'External tools for retrieving facts and taking actions.',
     whatItIs: 'The AI calling tools to retrieve facts or perform actions (search, DB query, GitHub, CI, observability). Grounds the AI in reality.',
     useWhen: [
@@ -140,7 +140,7 @@ export const primitives: Primitive[] = [
       },
       {
         provider: 'claude',
-        implementation: 'Project memory file',
+        implementation: 'Project memory file with @imports',
         location: 'CLAUDE.md',
         support: 'full',
       },
@@ -148,10 +148,38 @@ export const primitives: Primitive[] = [
     category: 'instructions',
   },
   {
+    id: 'global-instructions',
+    name: 'Global Instructions',
+    description: 'User-level preferences that apply across all projects.',
+    whatItIs: 'Personal preferences and standards that follow you across all projects. Defines your individual coding style, preferred patterns, and global behaviors.',
+    useWhen: [
+      'You want consistent personal preferences across projects',
+      'You have coding standards you always follow',
+      'You want global slash commands or agents available everywhere',
+    ],
+    prevents: 'Repeating the same preferences in every project',
+    combineWith: ['Persistent Instructions', 'Custom Agents'],
+    implementations: [
+      {
+        provider: 'copilot',
+        implementation: 'User-level settings in VS Code',
+        location: 'VS Code settings.json',
+        support: 'full',
+      },
+      {
+        provider: 'claude',
+        implementation: 'User-level memory and config',
+        location: '~/.claude/CLAUDE.md',
+        support: 'full',
+      },
+    ],
+    category: 'instructions',
+  },
+  {
     id: 'scope-specific-instructions',
-    name: 'Scope-Specific Instructions',
-    description: 'Instructions that apply only within a specific boundary.',
-    whatItIs: 'Instructions that apply only within a scope boundary (repo, directory, workspace, project). Enables "policy close to the code" where different parts of a system can have different conventions.',
+    name: 'Path-Scoped Rules',
+    description: 'Instructions that apply only to specific file paths.',
+    whatItIs: 'Instructions that apply only within a scope boundary defined by glob patterns. Enables "policy close to the code" where different parts of a system can have different conventions.',
     useWhen: [
       'Different parts of a system have different conventions',
       'Frontend and backend need different rules',
@@ -162,14 +190,14 @@ export const primitives: Primitive[] = [
     implementations: [
       {
         provider: 'copilot',
-        implementation: 'Path-specific instruction files with glob patterns',
+        implementation: 'Instruction files with applyTo glob patterns',
         location: '.github/instructions/*.instructions.md',
         support: 'full',
       },
       {
         provider: 'claude',
-        implementation: 'Nested memory files in subdirectories',
-        location: '{directory}/CLAUDE.md',
+        implementation: 'Rule files with globs frontmatter',
+        location: '.claude/rules/*.md',
         support: 'full',
       },
     ],
@@ -177,9 +205,9 @@ export const primitives: Primitive[] = [
   },
   {
     id: 'prompt-templates',
-    name: 'Prompt Templates',
-    description: 'Repeatable prompts for recurring tasks.',
-    whatItIs: 'Reusable prompts for recurring tasks like "write tests", "summarize this ADR", or "generate migration plan". Saves time and ensures consistent inputs/outputs.',
+    name: 'Slash Commands',
+    description: 'Repeatable prompts invoked via / commands.',
+    whatItIs: 'Reusable prompts for recurring tasks like "write tests", "summarize this ADR", or "generate migration plan". Invoked via slash commands for quick access.',
     useWhen: [
       'You notice yourself rewriting the same prompt',
       'A team wants consistent inputs/outputs',
@@ -196,7 +224,7 @@ export const primitives: Primitive[] = [
       },
       {
         provider: 'claude',
-        implementation: 'Slash commands with full frontmatter support',
+        implementation: 'Command files with frontmatter and $ARGUMENTS',
         location: '.claude/commands/*.md',
         support: 'full',
       },
@@ -234,7 +262,7 @@ export const primitives: Primitive[] = [
   },
   {
     id: 'guardrails',
-    name: 'Guardrails',
+    name: 'Permissions & Guardrails',
     description: 'Explicit constraints on what the AI can do.',
     whatItIs: 'Explicit constraints on what the AI is allowed to do (no prod writes, require approvals, redact secrets). Essential for safe tool use.',
     useWhen: [
@@ -253,8 +281,36 @@ export const primitives: Primitive[] = [
       },
       {
         provider: 'claude',
-        implementation: 'Permission system with allow/deny lists and sandbox',
+        implementation: 'Allow/deny lists with pattern matching and sandbox',
         location: '.claude/settings.json',
+        support: 'full',
+      },
+    ],
+    category: 'safety',
+  },
+  {
+    id: 'hooks',
+    name: 'Lifecycle Hooks',
+    description: 'Code that runs before/after AI tool execution.',
+    whatItIs: 'Custom scripts or commands that run at specific points in the AI workflow: before tool use, after tool use, or when the agent stops. Enables validation, logging, and custom behaviors.',
+    useWhen: [
+      'You need to validate or transform tool inputs/outputs',
+      'You want custom logging or audit trails',
+      'You need to enforce policies programmatically',
+    ],
+    prevents: 'Unvalidated tool execution and missed policy enforcement',
+    combineWith: ['Guardrails', 'Verification'],
+    implementations: [
+      {
+        provider: 'copilot',
+        implementation: 'Not available',
+        location: 'N/A',
+        support: 'diy',
+      },
+      {
+        provider: 'claude',
+        implementation: 'PreToolUse, PostToolUse, Stop hooks with matchers',
+        location: '.claude/hooks/hooks.json',
         support: 'full',
       },
     ],
@@ -275,14 +331,14 @@ export const primitives: Primitive[] = [
     implementations: [
       {
         provider: 'copilot',
-        implementation: 'Run tests/lint via tools',
+        implementation: 'Run tests/lint via terminal tools',
         location: 'Terminal tools in agent mode',
         support: 'full',
       },
       {
         provider: 'claude',
-        implementation: 'Run tests/lint via Bash tool with permission controls',
-        location: 'Bash tool in Claude Code',
+        implementation: 'Run tests/lint via Bash tool with hooks',
+        location: 'Bash tool + hooks',
         support: 'full',
       },
     ],
