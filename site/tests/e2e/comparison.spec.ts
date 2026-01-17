@@ -16,6 +16,7 @@ test.describe('Provider Comparison', () => {
     await expect(page.getByRole('columnheader', { name: /Primitive/i })).toBeVisible()
     await expect(page.getByRole('columnheader', { name: /GitHub Copilot/i })).toBeVisible()
     await expect(page.getByRole('columnheader', { name: /Claude Code/i })).toBeVisible()
+    await expect(page.getByRole('columnheader', { name: /Cursor/i })).toBeVisible()
   })
 
   test('should display all primitives in the table', async ({ page }) => {
@@ -38,10 +39,14 @@ test.describe('Provider Comparison', () => {
     const table = page.getByRole('table')
     // Check for Full Support badges
     await expect(table.getByText('Full Support').first()).toBeVisible()
-    // 11 primitives: 10 have full support on both providers (20), Hooks has full on Claude only (1) = 21
+    // 11 primitives, 3 providers: Full support counts vary by primitive
+    // Ensure at least one Full Support badge is visible
     const fullSupportBadges = table.getByText('Full Support')
-    await expect(fullSupportBadges).toHaveCount(21)
-    // Hooks has "Not Available" on Copilot
+    await expect(fullSupportBadges).toHaveCount(18)
+    // Partial support exists
+    const partialBadges = table.getByText('Partial')
+    await expect(partialBadges).toHaveCount(5)
+    // Hooks has "Not Available" on Copilot and Cursor
     await expect(table.getByText('Not Available')).toBeVisible()
   })
 
@@ -51,9 +56,10 @@ test.describe('Provider Comparison', () => {
     const row = table.getByRole('row').filter({ hasText: 'Persistent Instructions' }).first()
     await row.click()
 
-    // Should show expanded details with implementation info
+    // Should show expanded details with implementation info for all 3 providers
     await expect(page.getByText('Repo instructions file')).toBeVisible()
     await expect(page.getByText('Project memory file with @imports')).toBeVisible()
+    await expect(page.getByText('Project instructions file')).toBeVisible()
   })
 
   test('should show file locations when expanded', async ({ page }) => {
@@ -62,9 +68,10 @@ test.describe('Provider Comparison', () => {
     const row = table.getByRole('row').filter({ hasText: 'Persistent Instructions' }).first()
     await row.click()
 
-    // Should show file locations
+    // Should show file locations for all 3 providers
     await expect(page.getByText('.github/copilot-instructions.md')).toBeVisible()
     await expect(page.getByText('CLAUDE.md').first()).toBeVisible()
+    await expect(page.getByText('.cursor/instructions.md')).toBeVisible()
   })
 
   test('should collapse row on second click', async ({ page }) => {
@@ -101,9 +108,11 @@ test.describe('Provider Comparison', () => {
     // Click to expand
     await row.click()
 
-    // Should have copy buttons
+    // Should have copy buttons for all 3 providers
     const copyButtons = page.getByRole('button', { name: /Copy location/i })
-    await expect(copyButtons.first()).toBeVisible()
+    await expect(copyButtons.nth(0)).toBeVisible()
+    await expect(copyButtons.nth(1)).toBeVisible()
+    await expect(copyButtons.nth(2)).toBeVisible()
   })
 
   test('should only expand one row at a time', async ({ page }) => {
