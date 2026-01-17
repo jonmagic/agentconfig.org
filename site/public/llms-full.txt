@@ -52,6 +52,7 @@ Multi-step execution with planning and tool use.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Agent mode in Copilot Chat | VS Code Copilot Chat | full |
 | Claude Code | Agentic workflows in Claude Code | Claude Code CLI | full |
+| Cursor | Cursor Agent mode for multi-step execution | Cursor Editor with Agent capabilities | full |
 
 ---
 
@@ -76,6 +77,7 @@ Reusable multi-step procedures for common tasks.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Skill modules in skills directory | .github/skills/*/SKILL.md | full |
 | Claude Code | Skill modules in .claude directory | .claude/skills/*/SKILL.md | full |
+| Cursor | Custom instructions and workflows via .cursor/rules | .cursor/rules/*.md | partial |
 
 ---
 
@@ -100,6 +102,7 @@ External tools for retrieving facts and taking actions.
 |----------|---------------|----------|---------|
 | GitHub Copilot | MCP servers and tool calling | VS Code MCP settings | full |
 | Claude Code | MCP servers and tool calling | .claude/settings.json | full |
+| Cursor | Tool integrations via Cursor Extensions API | .cursor/extensions | partial |
 
 ---
 
@@ -128,6 +131,7 @@ A durable set of norms that define "good" for your project.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Repository-level instructions file | .github/copilot-instructions.md | full |
 | Claude Code | Project memory file with @imports | CLAUDE.md | full |
+| Cursor | Project instructions file | .cursor/instructions.md | full |
 
 ---
 
@@ -152,6 +156,7 @@ User-level preferences that apply across all projects.
 |----------|---------------|----------|---------|
 | GitHub Copilot | User-level settings in VS Code | VS Code settings.json | full |
 | Claude Code | User-level memory and config | ~/.claude/CLAUDE.md | full |
+| Cursor | User-level settings and preferences | ~/.cursor/settings.json | full |
 
 ---
 
@@ -176,6 +181,7 @@ Instructions that apply only to specific file paths.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Instruction files with applyTo glob patterns | .github/instructions/*.instructions.md | full |
 | Claude Code | Rule files with globs frontmatter | .claude/rules/*.md | full |
+| Cursor | Rules with path patterns | .cursor/rules/*.md | full |
 
 ---
 
@@ -200,6 +206,7 @@ Repeatable prompts invoked via / commands.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Prompt files invoked via / commands | .github/prompts/*.prompt.md | full |
 | Claude Code | Command files with frontmatter and $ARGUMENTS | .claude/commands/*.md | full |
+| Cursor | Quick commands via UI shortcuts | Cursor Editor built-in commands | partial |
 
 ---
 
@@ -228,6 +235,7 @@ Specialized agent personas with specific roles and permissions.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Agent definition files | .github/agents/*.agent.md | full |
 | Claude Code | Custom subagents with roles and tool permissions | .claude/agents/*.md | full |
+| Cursor | Cursor Agents with specific behaviors | .cursor/agents/ | partial |
 
 ---
 
@@ -252,6 +260,7 @@ Explicit constraints on what the AI can do.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Org policies and tool permissions | VS Code settings + org policies | full |
 | Claude Code | Allow/deny lists with pattern matching and sandbox | .claude/settings.json | full |
+| Cursor | Built-in safety features and restrictions | .cursor/settings.json | partial |
 
 ---
 
@@ -276,6 +285,7 @@ Code that runs before/after AI tool execution.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Not available | N/A | diy |
 | Claude Code | PreToolUse, PostToolUse, Stop hooks with matchers | .claude/hooks/hooks.json | full |
+| Cursor | Not available | N/A | diy |
 
 ---
 
@@ -300,6 +310,7 @@ Checks that validate AI outputs before shipping.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Run tests/lint via terminal tools | Terminal tools in agent mode | full |
 | Claude Code | Run tests/lint via Bash tool with hooks | Bash tool + hooks | full |
+| Cursor | Integrated terminal for test execution | Cursor Editor integrated terminal | full |
 
 ---
 
