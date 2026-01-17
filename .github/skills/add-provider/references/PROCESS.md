@@ -1,0 +1,426 @@
+# Detailed Process: Adding a Provider
+
+Complete step-by-step instructions for all 6 work streams.
+
+## Stream 1: Type System Updates (2-4 hours)
+
+**No dependencies, can start immediately**
+
+### 1.1 Add to Provider Union Type
+
+Edit `site/src/data/primitives.ts`:
+
+```typescript
+// Change from:
+export type Provider = 'copilot' | 'claude'
+
+// To:
+export type Provider = 'copilot' | 'claude' | 'cursor'
+```
+
+Edit `site/src/data/fileTree.ts`:
+
+```typescript
+// Change from:
+export type Provider = 'copilot' | 'claude'
+
+// To:
+export type Provider = 'copilot' | 'claude' | 'cursor'
+```
+
+### 1.2 Update Comparison Interface
+
+Edit `site/src/data/comparison.ts`:
+
+```typescript
+export interface ComparisonRow {
+  primitiveId: string
+  primitiveName: string
+  copilot: ProviderSupport
+  claude: ProviderSupport
+  cursor: ProviderSupport  // Add this
+}
+```
+
+### 1.3 Update UI Provider Labels
+
+Edit `site/src/components/PrimitiveCards/PrimitiveCard.tsx`:
+
+```typescript
+const providerLabels: Record<Provider, string> = {
+  copilot: 'GitHub Copilot',
+  claude: 'Claude Code',
+  cursor: 'Cursor',  // Add this
+}
+```
+
+### 1.4 Verify TypeScript
+
+```bash
+npm run typecheck
+```
+
+You'll see errors about missing provider data - this is expected. Continue to Stream 2.
+
+---
+
+## Stream 2: Data Layer Updates (4-6 hours)
+
+**Depends on Stream 1 - must have types in place**
+
+### 2.1 Add Provider Implementations to All 11 Primitives
+
+Edit `site/src/data/primitives.ts`:
+
+For each of the 11 primitives, add a new entry to the `implementations` array:
+
+```typescript
+implementations: [
+  {
+    provider: 'copilot',
+    implementation: '...',
+    location: '...',
+    support: 'full',
+  },
+  {
+    provider: 'claude',
+    implementation: '...',
+    location: '...',
+    support: 'full',
+  },
+  {
+    provider: 'cursor',  // Add new entry
+    implementation: 'Cursor Agent mode for multi-step execution',
+    location: 'Cursor Editor with Agent capabilities',
+    support: 'full',  // 'full' | 'partial' | 'diy'
+  },
+]
+```
+
+**Research guide for each primitive:**
+1. How does the provider implement this primitive?
+2. Where are the config files? (.cursor/instructions.md, etc.)
+3. Is support native (full), limited (partial), or via custom setup (diy)?
+
+All 11 primitives:
+- Agent Mode
+- Skills / Workflows
+- Tool Integrations (MCP)
+- Persistent Instructions
+- Global Instructions
+- Path-Scoped Rules
+- Slash Commands
+- Custom Agents
+- Permissions & Guardrails
+- Lifecycle Hooks
+- Verification / Evals
+
+### 2.2 Add Provider Data to Comparison Matrix
+
+Edit `site/src/data/comparison.ts`:
+
+For each of the 11 `ComparisonRow` entries, add cursor field:
+
+```typescript
+{
+  primitiveId: 'agent-mode',
+  primitiveName: 'Agent Mode',
+  copilot: { level: 'full', implementation: '...', location: '...' },
+  claude: { level: 'full', implementation: '...', location: '...' },
+  cursor: {  // Add this
+    level: 'full',  // 'full' | 'partial' | 'none'
+    implementation: 'Cursor Agent mode for multi-step execution',
+    location: 'Cursor Editor with Agent capabilities',
+  },
+}
+```
+
+### 2.3 Add File Tree Structure
+
+Edit `site/src/data/fileTree.ts`:
+
+Create global and project-level file trees for the provider:
+
+```typescript
+export const cursorTree: FileNode = {
+  id: 'cursor-root',
+  name: 'my-project',
+  type: 'folder',
+  children: [
+    {
+      id: 'cursor-dotcursor',
+      name: '.cursor',
+      type: 'folder',
+      children: [
+        {
+          id: 'cursor-instructions',
+          name: 'instructions.md',
+          type: 'file',
+          details: {
+            label: 'Project Instructions',
+            description: 'Cursor project-level instructions.',
+            whatGoesHere: ['Project overview', 'Coding standards', 'Build commands'],
+            whenLoaded: 'Always loaded first.',
+            loadOrder: 1,
+            example: '# Cursor Instructions\n\n## Setup\n...',
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const cursorGlobalTree: FileNode = {
+  id: 'cursor-global-root',
+  name: '~',
+  type: 'folder',
+  children: [
+    // Global config structure
+  ],
+}
+
+// Update the mappings:
+export const trees: Record<Provider, FileNode> = {
+  copilot: copilotTree,
+  claude: claudeTree,
+  cursor: cursorTree,  // Add
+}
+
+export const globalTrees: Record<Provider, FileNode> = {
+  copilot: copilotGlobalTree,
+  claude: claudeGlobalTree,
+  cursor: cursorGlobalTree,  // Add
+}
+```
+
+### 2.4 Verify TypeScript
+
+```bash
+npm run typecheck
+```
+
+Should have no errors now.
+
+---
+
+## Stream 3: UI Component Updates (4-8 hours)
+
+**Depends on Streams 1 & 2**
+
+### 3.1 Update Comparison Table
+
+Edit `site/src/components/ProviderComparison/ComparisonTable.tsx`:
+
+Add provider column header:
+
+```typescript
+<th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
+  <span className="inline-flex items-center gap-2">
+    <span aria-hidden="true">✨</span>
+    Cursor
+  </span>
+</th>
+```
+
+Add provider cell to table rows:
+
+```typescript
+<td className="px-4 py-3 text-center">
+  <SupportBadge level={row.cursor.level} />
+</td>
+```
+
+Update `ExpandedRow` state typing:
+
+```typescript
+const [copiedLocation, setCopiedLocation] = useState<'copilot' | 'claude' | 'cursor' | null>(null)
+
+const handleCopy = async (provider: 'copilot' | 'claude' | 'cursor', location: string) => {
+  // ... existing logic
+}
+```
+
+Update `ExpandedRow` to show provider details:
+
+```typescript
+<tr className="bg-secondary/30">
+  <td colSpan={4} className="px-4 py-4">  {/* Change from colSpan={3} */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">  {/* Change from md:grid-cols-2 */}
+      {/* Copilot details */}
+      {/* Claude details */}
+      {/* Add Cursor details */}
+      <div className="space-y-2">
+        <h4 className="text-sm font-semibold text-foreground">Cursor</h4>
+        <p className="text-sm text-muted-foreground">{row.cursor.implementation}</p>
+        <div className="flex items-center gap-2">
+          <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono...">
+            {row.cursor.location}
+          </code>
+          <button onClick={() => { void handleCopy('cursor', row.cursor.location) }}>
+            {/* copy button JSX */}
+          </button>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+```
+
+---
+
+## Stream 4: Testing (3-4 hours)
+
+**Depends on Stream 3**
+
+### 4.1 Update E2E Tests
+
+Edit `site/tests/e2e/comparison.spec.ts`:
+
+Add provider to header test:
+
+```typescript
+test('should display table headers', async ({ page }) => {
+  await expect(page.getByRole('columnheader', { name: /Cursor/i })).toBeVisible()
+})
+```
+
+Update support badge count test (adjust numbers based on provider support):
+
+```typescript
+test('should display support level badges', async ({ page }) => {
+  const fullSupportBadges = table.getByText('Full Support')
+  await expect(fullSupportBadges).toHaveCount(18)  // Adjust
+
+  const partialBadges = table.getByText('Partial')
+  await expect(partialBadges).toHaveCount(5)  // Adjust
+})
+```
+
+Add provider to expansion test:
+
+```typescript
+test('should expand row on click to show details', async ({ page }) => {
+  // ...
+  await expect(page.getByText('Project instructions file')).toBeVisible()  // Cursor
+})
+
+test('should show file locations when expanded', async ({ page }) => {
+  // ...
+  await expect(page.getByText('.cursor/instructions.md')).toBeVisible()
+})
+
+test('should have copy buttons in expanded row', async ({ page }) => {
+  const copyButtons = page.getByRole('button', { name: /Copy location/i })
+  await expect(copyButtons.nth(0)).toBeVisible()  // Copilot
+  await expect(copyButtons.nth(1)).toBeVisible()  // Claude
+  await expect(copyButtons.nth(2)).toBeVisible()  // Cursor
+})
+```
+
+### 4.2 Run Tests
+
+```bash
+npm run test
+```
+
+All tests should pass.
+
+---
+
+## Stream 5: App Integration (1-2 hours)
+
+**No hard dependency, can run in parallel with Streams 3-4**
+
+### 5.1 Update Site Copy
+
+Edit `site/src/App.tsx`:
+
+```typescript
+<Section
+  id="comparison"
+  title="Provider Comparison"
+  description="Compare how primitives are implemented across GitHub Copilot, Claude Code, and Cursor."
+>
+```
+
+Edit `site/src/components/Hero/Hero.tsx`:
+
+```typescript
+Configure GitHub Copilot, Claude Code, and Cursor for any role or workflow.
+```
+
+### 5.2 Update Documentation
+
+Edit `README.md`:
+
+Update primitive count:
+```markdown
+- **AI Primitives** — The 11 core configuration primitives...
+```
+
+Update provider comparison description:
+```markdown
+- **Provider Comparison** — Side-by-side comparison of GitHub Copilot, Claude Code, and Cursor...
+```
+
+Add provider section:
+```markdown
+### Cursor
+
+| Type | Path |
+|------|------|
+| Global settings | `~/.cursor/settings.json` |
+| Project instructions | `.cursor/instructions.md` |
+| Project rules | `.cursor/rules/*.md` |
+```
+
+---
+
+## Stream 6: LLMs Generation (1-2 hours)
+
+**Depends on all previous streams**
+
+### 6.1 Update Generation Script (if needed)
+
+Check `.github/skills/generate-llms/scripts/generate-llms-full.ts` for provider name mapping:
+
+```typescript
+// If using a ternary that only handles copilot/claude:
+const providerName =
+  impl.provider === 'copilot' ? 'GitHub Copilot' :
+  impl.provider === 'claude' ? 'Claude Code' :
+  impl.provider === 'cursor' ? 'Cursor' :
+  impl.provider;
+```
+
+### 6.2 Regenerate LLMs Files
+
+```bash
+bun .github/skills/generate-llms/scripts/generate-llms-full.ts
+```
+
+This regenerates:
+- `site/public/llms-full.txt` - Complete content
+- `site/public/llms.txt` - Table of contents
+- `site/public/*.md` - Page-specific markdown
+
+### 6.3 Verify Output
+
+```bash
+grep -A 3 "Agent Mode" site/public/llms-full.txt
+```
+
+Should show your provider correctly:
+```
+| Cursor | Cursor Agent mode... | Cursor Editor... | full |
+```
+
+### 6.4 Build and Test
+
+```bash
+npm run typecheck
+npm run test
+npm run build
+```
+
+All should succeed.
