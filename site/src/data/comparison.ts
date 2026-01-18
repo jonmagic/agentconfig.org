@@ -57,9 +57,9 @@ export const comparisonData: ComparisonRow[] = [
       location: '.claude/skills/*/SKILL.md',
     },
     cursor: {
-      level: 'partial',
-      implementation: 'Custom instructions and workflows via .cursor/rules',
-      location: '.cursor/rules/*.md',
+      level: 'full',
+      implementation: 'Skill modules as portable, reusable packages',
+      location: '.cursor/skills/*/SKILL.md',
     },
   },
   {
@@ -76,9 +76,9 @@ export const comparisonData: ComparisonRow[] = [
       location: '.claude/settings.json',
     },
     cursor: {
-      level: 'partial',
-      implementation: 'Tool integrations via Cursor Extensions API',
-      location: '.cursor/extensions',
+      level: 'full',
+      implementation: 'MCP servers with stdio, SSE, and HTTP transports',
+      location: '.cursor/mcp.json',
     },
   },
   // === CUSTOMIZATION ===
@@ -153,9 +153,9 @@ export const comparisonData: ComparisonRow[] = [
       location: '.claude/commands/*.md',
     },
     cursor: {
-      level: 'partial',
-      implementation: 'Quick commands via UI shortcuts',
-      location: 'Cursor Editor built-in commands',
+      level: 'full',
+      implementation: 'Custom commands with parameters and reusable workflows',
+      location: '.cursor/commands/*.md',
     },
   },
   // === CONTROL ===
@@ -173,9 +173,9 @@ export const comparisonData: ComparisonRow[] = [
       location: '.claude/agents/*.md',
     },
     cursor: {
-      level: 'partial',
-      implementation: 'Cursor Agents with specific behaviors',
-      location: '.cursor/agents/',
+      level: 'full',
+      implementation: 'Subagents with model selection and context isolation',
+      location: '.cursor/agents/*.md',
     },
   },
   {
@@ -192,9 +192,9 @@ export const comparisonData: ComparisonRow[] = [
       location: '.claude/settings.json',
     },
     cursor: {
-      level: 'partial',
-      implementation: 'Built-in safety features and restrictions',
-      location: '.cursor/settings.json',
+      level: 'full',
+      implementation: 'Approvals, .cursorignore, LLM safety controls, and security hooks',
+      location: '.cursor/settings.json + .cursorignore',
     },
   },
   {
