@@ -42,10 +42,10 @@ test.describe('Provider Comparison', () => {
     // 11 primitives, 3 providers: Full support counts vary by primitive
     // Ensure at least one Full Support badge is visible
     const fullSupportBadges = table.getByText('Full Support')
-    await expect(fullSupportBadges).toHaveCount(27)
-    // Partial support exists
+    await expect(fullSupportBadges).toHaveCount(32)
+    // No partial support items remain
     const partialBadges = table.getByText('Partial')
-    await expect(partialBadges).toHaveCount(5)
+    await expect(partialBadges).toHaveCount(0)
     // Hooks has "Not Available" on Copilot only
     await expect(table.getByText('Not Available')).toBeVisible()
   })
