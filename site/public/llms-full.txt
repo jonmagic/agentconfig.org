@@ -77,7 +77,7 @@ Reusable multi-step procedures for common tasks.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Skill modules in skills directory | .github/skills/*/SKILL.md | full |
 | Claude Code | Skill modules in .claude directory | .claude/skills/*/SKILL.md | full |
-| Cursor | Custom instructions and workflows via .cursor/rules | .cursor/rules/*.md | partial |
+| Cursor | Skill modules as portable, reusable packages | .cursor/skills/*/SKILL.md | full |
 
 ---
 
@@ -102,7 +102,7 @@ External tools for retrieving facts and taking actions.
 |----------|---------------|----------|---------|
 | GitHub Copilot | MCP servers and tool calling | VS Code MCP settings | full |
 | Claude Code | MCP servers and tool calling | .claude/settings.json | full |
-| Cursor | Tool integrations via Cursor Extensions API | .cursor/extensions | partial |
+| Cursor | MCP servers with stdio, SSE, and HTTP transports | .cursor/mcp.json | full |
 
 ---
 
@@ -206,7 +206,7 @@ Repeatable prompts invoked via / commands.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Prompt files invoked via / commands | .github/prompts/*.prompt.md | full |
 | Claude Code | Command files with frontmatter and $ARGUMENTS | .claude/commands/*.md | full |
-| Cursor | Quick commands via UI shortcuts | Cursor Editor built-in commands | partial |
+| Cursor | Custom commands with parameters and reusable workflows | .cursor/commands/*.md | full |
 
 ---
 
@@ -235,7 +235,7 @@ Specialized agent personas with specific roles and permissions.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Agent definition files | .github/agents/*.agent.md | full |
 | Claude Code | Custom subagents with roles and tool permissions | .claude/agents/*.md | full |
-| Cursor | Cursor Agents with specific behaviors | .cursor/agents/ | partial |
+| Cursor | Subagents with model selection and context isolation | .cursor/agents/*.md | full |
 
 ---
 
@@ -260,7 +260,7 @@ Explicit constraints on what the AI can do.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Org policies and tool permissions | VS Code settings + org policies | full |
 | Claude Code | Allow/deny lists with pattern matching and sandbox | .claude/settings.json | full |
-| Cursor | Built-in safety features and restrictions | .cursor/settings.json | partial |
+| Cursor | Approvals, .cursorignore, LLM safety controls, and security hooks | .cursor/settings.json + .cursorignore | full |
 
 ---
 
@@ -285,7 +285,7 @@ Code that runs before/after AI tool execution.
 |----------|---------------|----------|---------|
 | GitHub Copilot | Not available | N/A | diy |
 | Claude Code | PreToolUse, PostToolUse, Stop hooks with matchers | .claude/hooks/hooks.json | full |
-| Cursor | Not available | N/A | diy |
+| Cursor | Session, execution, and file operation hooks | .cursor/hooks.json | full |
 
 ---
 
