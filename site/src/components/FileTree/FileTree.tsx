@@ -16,6 +16,7 @@ export interface FileTreeProps {
 const providers: { id: Provider; label: string; icon: string }[] = [
   { id: 'copilot', label: 'GitHub Copilot', icon: '🤖' },
   { id: 'claude', label: 'Claude Code', icon: '🧠' },
+  { id: 'cursor', label: 'Cursor', icon: '➤' },
 ]
 
 export function FileTree({

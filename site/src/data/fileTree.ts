@@ -1,4 +1,4 @@
-export type Provider = 'copilot' | 'claude'
+export type Provider = 'copilot' | 'claude' | 'cursor'
 
 export interface FileNode {
   /** Unique identifier for the node */
@@ -1071,12 +1071,115 @@ description: "Thorough code review following best practices. Use when reviewing 
   ],
 }
 
+export const cursorTree: FileNode = {
+  id: 'cursor-root',
+  name: 'my-project',
+  type: 'folder',
+  children: [
+    {
+      id: 'cursor-dotcursor',
+      name: '.cursor',
+      type: 'folder',
+      children: [
+        {
+          id: 'cursor-instructions',
+          name: 'instructions.md',
+          type: 'file',
+          details: {
+            label: 'Project Instructions',
+            description: 'Cursor project-level instructions for AI behavior.',
+            whatGoesHere: [
+              'Project overview and tech stack',
+              'Coding conventions',
+              'How to build and test',
+            ],
+            whenLoaded: 'Always loaded first. Forms the baseline for Cursor interactions.',
+            loadOrder: 1,
+            example: `# Cursor Instructions
+
+## Project Setup
+- Node.js 18+
+- npm install
+
+## Conventions
+- TypeScript strict mode
+- Functional components`,
+          },
+        },
+        {
+          id: 'cursor-rules',
+          name: 'rules',
+          type: 'folder',
+          children: [
+            {
+              id: 'cursor-rule-frontend',
+              name: 'frontend.md',
+              type: 'file',
+              details: {
+                label: 'Path-Specific Rule',
+                description: 'Rules applying to specific directories.',
+                whatGoesHere: [
+                  'Directory-specific conventions',
+                  'Framework guidance',
+                ],
+                whenLoaded: 'Loaded when working on matching paths.',
+                loadOrder: 2,
+                example: `# Frontend Rules
+
+- Use React hooks
+- Test with React Testing Library`,
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+export const cursorGlobalTree: FileNode = {
+  id: 'cursor-global-root',
+  name: '~',
+  type: 'folder',
+  children: [
+    {
+      id: 'cursor-global-dotcursor',
+      name: '.cursor',
+      type: 'folder',
+      children: [
+        {
+          id: 'cursor-global-settings',
+          name: 'settings.json',
+          type: 'file',
+          details: {
+            label: 'Global Settings',
+            description: 'Personal Cursor settings across all projects.',
+            whatGoesHere: [
+              'Default preferences',
+              'Model selection',
+              'Theme settings',
+            ],
+            whenLoaded: 'Always loaded. Applies globally.',
+            loadOrder: 1,
+            example: `{
+  "theme": "dark",
+  "fontSize": 14
+}`,
+          },
+        },
+      ],
+    },
+  ],
+}
+
 export const trees: Record<Provider, FileNode> = {
   copilot: copilotTree,
   claude: claudeTree,
+  cursor: cursorTree,
 }
 
 export const globalTrees: Record<Provider, FileNode> = {
   copilot: copilotGlobalTree,
   claude: claudeGlobalTree,
+  cursor: cursorGlobalTree,
 }
