@@ -239,6 +239,8 @@ Quick reference for common feature mappings:
 
 ## Emoji Reference
 
+### Comparison Table Column Headers
+
 Used in column headers for visual distinction:
 
 ```
@@ -251,6 +253,23 @@ Alternative emojis (if preferred):
 - Copilot: 🔧, 💻, 🛠️
 - Claude: 🤖, 💡, 🎯
 - Cursor: ⚡, 🎨, 🚀
+
+### Interactive File Tree Provider Tabs
+
+Used in `FileTree.tsx` component for provider selection:
+
+```
+GitHub Copilot → 🤖  (robot - consistent with comparison table)
+Claude Code    → 🧠  (brain - consistent with comparison table)
+Cursor         → ➤   (arrow - direction/flow, alternative to ✨)
+```
+
+Alternative emojis for File Tree tabs:
+- Arrow variants: ➤, ▶, →, ⇒
+- Direction: 🎯, ⚡, 🚀
+- Editor: 💻, ⚙️, 🔧
+
+**Note:** File Tree icons can differ from comparison table icons if desired. Choose based on visual balance and readability in the UI.
 
 ---
 
