@@ -579,9 +579,14 @@ ${p.useWhen.map((u: string) => `- ${u}`).join('\n')}
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-${p.implementations.map((impl: any) => 
-  `| ${impl.provider === 'copilot' ? 'GitHub Copilot' : 'Claude Code'} | ${impl.implementation} | ${impl.location} | ${impl.support} |`
-).join('\n')}
+${p.implementations.map((impl: any) => {
+  const providerName =
+    impl.provider === 'copilot' ? 'GitHub Copilot' :
+    impl.provider === 'claude' ? 'Claude Code' :
+    impl.provider === 'cursor' ? 'Cursor' :
+    impl.provider;
+  return `| ${providerName} | ${impl.implementation} | ${impl.location} | ${impl.support} |`
+}).join('\n')}
 
 ---
 
