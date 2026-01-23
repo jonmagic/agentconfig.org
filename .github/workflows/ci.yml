@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: site
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        working-directory: site
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run linting
+        working-directory: site
+        run: bun run lint
+
+      - name: Run type checking
+        working-directory: site
+        run: bun run typecheck
+
+      - name: Run tests
+        working-directory: site
+        run: bun run test
+
+      - name: Build
+        working-directory: site
+        run: bun run build
