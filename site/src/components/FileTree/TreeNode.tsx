@@ -36,7 +36,8 @@ export function TreeNode({
       })
     : []
 
-  const handleClick = () => {
+  const handleClick = (e: JSX.TargetedMouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
     if (isFolder) {
       setIsExpanded(!isExpanded)
     } else if (onFileClick) {
@@ -47,24 +48,30 @@ export function TreeNode({
   const handleKeyDown = (e: JSX.TargetedKeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      handleClick()
+      e.stopPropagation()
+      if (isFolder) {
+        setIsExpanded(!isExpanded)
+      } else if (onFileClick) {
+        onFileClick(node)
+      }
     }
   }
 
   return (
-    <div className="select-none">
+    <div
+      role="treeitem"
+      aria-expanded={isFolder ? isExpanded : undefined}
+      aria-selected={isSelected}
+      tabIndex={0}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      className="select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-md"
+    >
       <div
-        role={isFolder ? 'treeitem' : 'button'}
-        aria-expanded={isFolder ? isExpanded : undefined}
-        aria-selected={isSelected}
-        tabIndex={0}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
         className={cn(
           'flex items-center gap-1.5 py-1.5 px-2 rounded-md cursor-pointer',
           'transition-colors duration-150',
           'hover:bg-secondary/80',
-          'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
           isSelected && 'bg-primary/10 text-primary font-medium',
           !isSelected && 'text-foreground'
         )}
