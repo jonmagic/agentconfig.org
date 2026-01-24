@@ -500,16 +500,17 @@ These primitives constrain what the AI is allowed to do.
 
 # Part 2: Provider Comparison
 
-Support matrix comparing GitHub Copilot and Claude Code:
+Support matrix comparing GitHub Copilot, Claude Code, and Cursor:
 
-| Primitive | Copilot | Claude |
-|-----------|---------|--------|
+| Primitive | Copilot | Claude | Cursor |
+|-----------|---------|--------|--------|
 `
 
   for (const row of comparisonData) {
     const copilotIcon = row.copilot.level === 'full' ? '✓' : row.copilot.level === 'partial' ? '◐' : '—'
     const claudeIcon = row.claude.level === 'full' ? '✓' : row.claude.level === 'partial' ? '◐' : '—'
-    content += `| ${row.primitiveName} | ${copilotIcon} ${row.copilot.implementation} | ${claudeIcon} ${row.claude.implementation} |\n`
+    const cursorIcon = row.cursor.level === 'full' ? '✓' : row.cursor.level === 'partial' ? '◐' : '—'
+    content += `| ${row.primitiveName} | ${copilotIcon} ${row.copilot.implementation} | ${claudeIcon} ${row.claude.implementation} | ${cursorIcon} ${row.cursor.implementation} |\n`
   }
 
   content += `
@@ -521,6 +522,7 @@ Support matrix comparing GitHub Copilot and Claude Code:
 - Slash Commands: \`.github/prompts/*.prompt.md\`
 - Custom Agents: \`.github/agents/*.agent.md\`
 - Skills: \`.github/skills/*/SKILL.md\`
+- Lifecycle Hooks: \`.github/hooks/*.json\`
 
 **Claude Code:**
 - Persistent Instructions: \`CLAUDE.md\` (root) or \`.claude/CLAUDE.md\`
@@ -531,6 +533,14 @@ Support matrix comparing GitHub Copilot and Claude Code:
 - Skills: \`.claude/skills/*/SKILL.md\`
 - Lifecycle Hooks: \`.claude/hooks/hooks.json\`
 - MCP Settings: \`.claude/settings.json\`
+
+**Cursor:**
+- Persistent Instructions: \`.cursor/instructions.md\`
+- Path-Scoped Rules: \`.cursor/rules/*.md\`
+- Slash Commands: \`.cursor/commands/*.md\`
+- Custom Agents: \`.cursor/agents/*.md\`
+- Skills: \`.cursor/skills/*/SKILL.md\`
+- Lifecycle Hooks: \`.cursor/hooks.json\`
 
 ---
 
@@ -585,7 +595,8 @@ ${p.implementations.map((impl: any) => {
     impl.provider === 'claude' ? 'Claude Code' :
     impl.provider === 'cursor' ? 'Cursor' :
     impl.provider;
-  return `| ${providerName} | ${impl.implementation} | ${impl.location} | ${impl.support} |`
+  const supportLabel = impl.support === 'full' ? '✓ Full' : impl.support === 'partial' ? '◐ Partial' : impl.support;
+  return `| ${providerName} | ${impl.implementation} | \`${impl.location}\` | ${supportLabel} |`
 }).join('\n')}
 
 ---

@@ -50,9 +50,9 @@ Multi-step execution with planning and tool use.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Agent mode in Copilot Chat | VS Code Copilot Chat | full |
-| Claude Code | Agentic workflows in Claude Code | Claude Code CLI | full |
-| Cursor | Cursor Agent mode for multi-step execution | Cursor Editor with Agent capabilities | full |
+| GitHub Copilot | Agent mode in Copilot Chat | `VS Code Copilot Chat` | ✓ Full |
+| Claude Code | Agentic workflows in Claude Code | `Claude Code CLI` | ✓ Full |
+| Cursor | Cursor Agent mode for multi-step execution | `Cursor Editor with Agent capabilities` | ✓ Full |
 
 ---
 
@@ -75,9 +75,9 @@ Reusable multi-step procedures for common tasks.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Skill modules in skills directory | .github/skills/*/SKILL.md | full |
-| Claude Code | Skill modules in .claude directory | .claude/skills/*/SKILL.md | full |
-| Cursor | Skill modules as portable, reusable packages | .cursor/skills/*/SKILL.md | full |
+| GitHub Copilot | Skill modules in skills directory | `.github/skills/*/SKILL.md` | ✓ Full |
+| Claude Code | Skill modules in .claude directory | `.claude/skills/*/SKILL.md` | ✓ Full |
+| Cursor | Skill modules as portable, reusable packages | `.cursor/skills/*/SKILL.md` | ✓ Full |
 
 ---
 
@@ -100,9 +100,9 @@ External tools for retrieving facts and taking actions.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | MCP servers and tool calling | VS Code MCP settings | full |
-| Claude Code | MCP servers and tool calling | .claude/settings.json | full |
-| Cursor | MCP servers with stdio, SSE, and HTTP transports | .cursor/mcp.json | full |
+| GitHub Copilot | MCP servers and tool calling | `VS Code MCP settings` | ✓ Full |
+| Claude Code | MCP servers and tool calling | `.claude/settings.json` | ✓ Full |
+| Cursor | MCP servers with stdio, SSE, and HTTP transports | `.cursor/mcp.json` | ✓ Full |
 
 ---
 
@@ -129,9 +129,9 @@ A durable set of norms that define "good" for your project.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Repository-level instructions file | .github/copilot-instructions.md | full |
-| Claude Code | Project memory file with @imports | CLAUDE.md | full |
-| Cursor | Project instructions file | .cursor/instructions.md | full |
+| GitHub Copilot | Repository-level instructions file | `.github/copilot-instructions.md` | ✓ Full |
+| Claude Code | Project memory file with @imports | `CLAUDE.md` | ✓ Full |
+| Cursor | Project instructions file | `.cursor/instructions.md` | ✓ Full |
 
 ---
 
@@ -154,9 +154,9 @@ User-level preferences that apply across all projects.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | User-level settings in VS Code | VS Code settings.json | full |
-| Claude Code | User-level memory and config | ~/.claude/CLAUDE.md | full |
-| Cursor | User-level settings and preferences | ~/.cursor/settings.json | full |
+| GitHub Copilot | User-level settings in VS Code | `VS Code settings.json` | ✓ Full |
+| Claude Code | User-level memory and config | `~/.claude/CLAUDE.md` | ✓ Full |
+| Cursor | User-level settings and preferences | `~/.cursor/settings.json` | ✓ Full |
 
 ---
 
@@ -179,9 +179,9 @@ Instructions that apply only to specific file paths.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Instruction files with applyTo glob patterns | .github/instructions/*.instructions.md | full |
-| Claude Code | Rule files with globs frontmatter | .claude/rules/*.md | full |
-| Cursor | Rules with path patterns | .cursor/rules/*.md | full |
+| GitHub Copilot | Instruction files with applyTo glob patterns | `.github/instructions/*.instructions.md` | ✓ Full |
+| Claude Code | Rule files with globs frontmatter | `.claude/rules/*.md` | ✓ Full |
+| Cursor | Rules with path patterns | `.cursor/rules/*.md` | ✓ Full |
 
 ---
 
@@ -204,9 +204,9 @@ Repeatable prompts invoked via / commands.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Prompt files invoked via / commands | .github/prompts/*.prompt.md | full |
-| Claude Code | Command files with frontmatter and $ARGUMENTS | .claude/commands/*.md | full |
-| Cursor | Custom commands with parameters and reusable workflows | .cursor/commands/*.md | full |
+| GitHub Copilot | Prompt files invoked via / commands | `.github/prompts/*.prompt.md` | ✓ Full |
+| Claude Code | Command files with frontmatter and $ARGUMENTS | `.claude/commands/*.md` | ✓ Full |
+| Cursor | Custom commands with parameters and reusable workflows | `.cursor/commands/*.md` | ✓ Full |
 
 ---
 
@@ -233,9 +233,9 @@ Specialized agent personas with specific roles and permissions.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Agent definition files | .github/agents/*.agent.md | full |
-| Claude Code | Custom subagents with roles and tool permissions | .claude/agents/*.md | full |
-| Cursor | Subagents with model selection and context isolation | .cursor/agents/*.md | full |
+| GitHub Copilot | Agent definition files | `.github/agents/*.agent.md` | ✓ Full |
+| Claude Code | Custom subagents with roles and tool permissions | `.claude/agents/*.md` | ✓ Full |
+| Cursor | Subagents with model selection and context isolation | `.cursor/agents/*.md` | ✓ Full |
 
 ---
 
@@ -258,9 +258,9 @@ Explicit constraints on what the AI can do.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Org policies and tool permissions | VS Code settings + org policies | full |
-| Claude Code | Allow/deny lists with pattern matching and sandbox | .claude/settings.json | full |
-| Cursor | Approvals, .cursorignore, LLM safety controls, and security hooks | .cursor/settings.json + .cursorignore | full |
+| GitHub Copilot | Org policies and tool permissions | `VS Code settings + org policies` | ✓ Full |
+| Claude Code | Allow/deny lists with pattern matching and sandbox | `.claude/settings.json` | ✓ Full |
+| Cursor | Approvals, .cursorignore, LLM safety controls, and security hooks | `.cursor/settings.json + .cursorignore` | ✓ Full |
 
 ---
 
@@ -283,9 +283,9 @@ Code that runs before/after AI tool execution.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Not available | N/A | diy |
-| Claude Code | PreToolUse, PostToolUse, Stop hooks with matchers | .claude/hooks/hooks.json | full |
-| Cursor | Session, execution, and file operation hooks | .cursor/hooks.json | full |
+| GitHub Copilot | Lifecycle hooks (public documentation coming soon) | `.github/hooks/*.json` | ✓ Full |
+| Claude Code | PreToolUse, PostToolUse, Stop hooks with matchers | `.claude/hooks/hooks.json` | ✓ Full |
+| Cursor | Session, execution, and file operation hooks | `.cursor/hooks.json` | ✓ Full |
 
 ---
 
@@ -308,9 +308,9 @@ Checks that validate AI outputs before shipping.
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Run tests/lint via terminal tools | Terminal tools in agent mode | full |
-| Claude Code | Run tests/lint via Bash tool with hooks | Bash tool + hooks | full |
-| Cursor | Integrated terminal for test execution | Cursor Editor integrated terminal | full |
+| GitHub Copilot | Run tests/lint via terminal tools | `Terminal tools in agent mode` | ✓ Full |
+| Claude Code | Run tests/lint via Bash tool with hooks | `Bash tool + hooks` | ✓ Full |
+| Cursor | Integrated terminal for test execution | `Cursor Editor integrated terminal` | ✓ Full |
 
 ---
 
@@ -318,21 +318,21 @@ Checks that validate AI outputs before shipping.
 
 # Part 2: Provider Comparison
 
-Support matrix comparing GitHub Copilot and Claude Code:
+Support matrix comparing GitHub Copilot, Claude Code, and Cursor:
 
-| Primitive | Copilot | Claude |
-|-----------|---------|--------|
-| Agent Mode | ✓ Agent mode in Copilot Chat | ✓ Agentic workflows in Claude Code |
-| Skills / Workflows | ✓ Skill modules in skills directory | ✓ Skill modules in .claude directory |
-| Tool Integrations (MCP) | ✓ MCP servers and tool calling | ✓ MCP servers and tool calling |
-| Persistent Instructions | ✓ Repo instructions file | ✓ Project memory file with @imports |
-| Global Instructions | ✓ User-level settings in VS Code | ✓ User-level memory and config |
-| Path-Scoped Rules | ✓ Instruction files with applyTo glob patterns | ✓ Rule files with globs frontmatter |
-| Slash Commands | ✓ Prompt files invoked via / commands | ✓ Command files with frontmatter and $ARGUMENTS |
-| Custom Agents | ✓ Agent definition files with roles and tool permissions | ✓ Subagent files with tools restrictions |
-| Permissions & Guardrails | ✓ Org policies and tool permissions | ✓ Allow/deny lists with pattern matching and sandbox |
-| Lifecycle Hooks | — Not available | ✓ PreToolUse, PostToolUse, Stop hooks with matchers |
-| Verification / Evals | ✓ Run tests/lint via terminal tools | ✓ Run tests/lint via Bash tool with hooks |
+| Primitive | Copilot | Claude | Cursor |
+|-----------|---------|--------|--------|
+| Agent Mode | ✓ Agent mode in Copilot Chat | ✓ Agentic workflows in Claude Code | ✓ Cursor Agent mode for multi-step execution |
+| Skills / Workflows | ✓ Skill modules in skills directory | ✓ Skill modules in .claude directory | ✓ Skill modules as portable, reusable packages |
+| Tool Integrations (MCP) | ✓ MCP servers and tool calling | ✓ MCP servers and tool calling | ✓ MCP servers with stdio, SSE, and HTTP transports |
+| Persistent Instructions | ✓ Repo instructions file | ✓ Project memory file with @imports | ✓ Project instructions file |
+| Global Instructions | ✓ User-level settings in VS Code | ✓ User-level memory and config | ✓ User-level settings and preferences |
+| Path-Scoped Rules | ✓ Instruction files with applyTo glob patterns | ✓ Rule files with globs frontmatter | ✓ Rules with path patterns |
+| Slash Commands | ✓ Prompt files invoked via / commands | ✓ Command files with frontmatter and $ARGUMENTS | ✓ Custom commands with parameters and reusable workflows |
+| Custom Agents | ✓ Agent definition files with roles and tool permissions | ✓ Subagent files with tools restrictions | ✓ Subagents with model selection and context isolation |
+| Permissions & Guardrails | ✓ Org policies and tool permissions | ✓ Allow/deny lists with pattern matching and sandbox | ✓ Approvals, .cursorignore, LLM safety controls, and security hooks |
+| Lifecycle Hooks | ✓ Lifecycle hooks (public documentation coming soon) | ✓ PreToolUse, PostToolUse, Stop hooks with matchers | ✓ Session, execution, and file operation hooks |
+| Verification / Evals | ✓ Run tests/lint via terminal tools | ✓ Run tests/lint via Bash tool with hooks | ✓ Integrated terminal for test execution |
 
 ### Config File Locations
 
@@ -342,6 +342,7 @@ Support matrix comparing GitHub Copilot and Claude Code:
 - Slash Commands: `.github/prompts/*.prompt.md`
 - Custom Agents: `.github/agents/*.agent.md`
 - Skills: `.github/skills/*/SKILL.md`
+- Lifecycle Hooks: `.github/hooks/*.json`
 
 **Claude Code:**
 - Persistent Instructions: `CLAUDE.md` (root) or `.claude/CLAUDE.md`
@@ -352,6 +353,14 @@ Support matrix comparing GitHub Copilot and Claude Code:
 - Skills: `.claude/skills/*/SKILL.md`
 - Lifecycle Hooks: `.claude/hooks/hooks.json`
 - MCP Settings: `.claude/settings.json`
+
+**Cursor:**
+- Persistent Instructions: `.cursor/instructions.md`
+- Path-Scoped Rules: `.cursor/rules/*.md`
+- Slash Commands: `.cursor/commands/*.md`
+- Custom Agents: `.cursor/agents/*.md`
+- Skills: `.cursor/skills/*/SKILL.md`
+- Lifecycle Hooks: `.cursor/hooks.json`
 
 ---
 
