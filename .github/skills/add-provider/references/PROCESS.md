@@ -456,6 +456,31 @@ All tests should pass.
 
 **No hard dependency, can run in parallel with Streams 3-4**
 
+### 5.0 Hardcoded Content Audit
+
+⚠️ **CRITICAL**: Some content is hardcoded in the presentation layer, NOT pulled from the data layer. These files must be manually updated when adding providers.
+
+**Files with hardcoded provider lists or counts:**
+
+| File | What to Update | Example |
+|------|----------------|---------|
+| `site/src/App.tsx` | Primitives section description | "Explore the **11** core primitives..." |
+| `site/src/components/Hero/Hero.tsx` | Hero tagline with provider names | "Configure GitHub Copilot, Claude Code, **and NewProvider**..." |
+
+**Why this matters:**
+- These strings are marketing/presentation copy, not data-driven
+- TypeScript won't catch missing providers in prose text
+- Users see outdated counts or missing provider names
+
+**How to find all occurrences:**
+```bash
+# Find files mentioning existing providers (to add new one)
+grep -rn "Claude Code" site/src/App.tsx site/src/components/Hero/
+
+# Find primitive count mentions
+grep -rn "primitives" site/src/ | grep -E "[0-9]+ (core )?primitives"
+```
+
 ### 5.1 Update Site Copy
 
 Edit `site/src/App.tsx`:
@@ -504,6 +529,59 @@ Add provider section:
 ## Stream 6: LLMs Generation (1-2 hours)
 
 **Depends on all previous streams**
+
+### 6.0 Generation Script Audit
+
+⚠️ **CRITICAL**: The generation script contains hardcoded strings that must be updated when adding providers. These are NOT pulled from the data layer.
+
+**Hardcoded locations in `.github/skills/generate-llms/scripts/generate-llms-full.ts`:**
+
+| Function | Approx Line | What to Update |
+|----------|-------------|----------------|
+| `generateLlmsTxt()` | ~78-82 | Intro description: provider names list, primitive count |
+| `generateLlmsFullTxt()` | ~441-447 | Site Overview: provider names list, primitive count |
+| `generateLlmsFullTxt()` | ~503-506 | Comparison table header and description |
+| `generateLlmsFullTxt()` | ~516-536 | Config File Locations section (add new provider block) |
+
+**How to find all occurrences:**
+```bash
+# Search for existing provider names in the script
+grep -n "Claude Code" .github/skills/generate-llms/scripts/generate-llms-full.ts
+
+# Search for primitive counts
+grep -n "primitives" .github/skills/generate-llms/scripts/generate-llms-full.ts
+```
+
+**Example updates needed:**
+
+1. **Intro text** (~line 80):
+```typescript
+// BEFORE:
+> A reference site for configuring AI coding assistants like GitHub Copilot and Claude Code.
+> Covers 10 AI primitives...
+
+// AFTER:
+> A reference site for configuring AI coding assistants like GitHub Copilot, Claude Code, and NewProvider.
+> Covers 11 AI primitives...
+```
+
+2. **Site Overview** (~line 441):
+```typescript
+// BEFORE:
+agentconfig.org is a reference site for configuring AI coding assistants like GitHub Copilot
+and Claude Code.
+
+// AFTER:
+agentconfig.org is a reference site for configuring AI coding assistants like GitHub Copilot,
+Claude Code, and NewProvider.
+```
+
+3. **Config File Locations** (~line 533): Add a new provider section:
+```typescript
+**NewProvider:**
+- Project Instructions: \`.newprovider/instructions.md\`
+- Global Config: \`~/.newprovider/config.json\`
+```
 
 ### 6.1 Update Generation Script (if needed)
 
