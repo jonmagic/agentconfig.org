@@ -8,6 +8,18 @@ Complete verification steps for all 6 work streams, plus pre-implementation rese
 
 **Do this BEFORE starting Stream 1. This is critical for correct implementation.**
 
+### Prior Art Check
+- [ ] Searched for closed/merged PRs that attempted to add this provider
+- [ ] Reviewed what prior attempts did right/wrong
+- [ ] Noted any reviewer feedback or issues from prior attempts
+- [ ] Checked if prior PR exists but was abandoned (may have useful research)
+
+**How to search:**
+```bash
+gh pr list --state all --search "provider-name" --limit 20
+gh pr view <number> --json title,body,files  # Review specific PR
+```
+
 ### Research Phase
 - [ ] Read [RESEARCH-GUIDE.md](RESEARCH-GUIDE.md) completely
 - [ ] Visited provider's official documentation site
@@ -255,6 +267,16 @@ Complete verification steps for all 6 work streams, plus pre-implementation rese
 ---
 
 ## Final Integration Verification
+
+### Content Consistency Check (Hardcoded Strings)
+- [ ] `site/src/App.tsx` - Primitives description count matches actual (currently 11)
+- [ ] `site/public/llms.txt` - Intro mentions all providers by name
+- [ ] `site/public/llms-full.txt` - Site Overview mentions all providers
+- [ ] Generation script intro text updated (see Stream 6 audit)
+- [ ] Run verification: `grep -rn "primitives" site/src/ site/public/ | grep -E "[0-9]+ (core )?primitives"`
+- [ ] Run verification: `grep -r "Copilot" site/src/App.tsx site/src/components/Hero/`
+
+**Why this matters:** Some content is hardcoded in presentation layer, not pulled from data layer. These strings must be manually updated when adding providers.
 
 ### Type Safety
 - [ ] `npm run typecheck` - NO errors
