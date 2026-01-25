@@ -11,7 +11,7 @@ and Claude Code. The site helps developers understand and implement AI configura
 to get consistent, high-quality assistance from AI tools.
 
 **Key Topics:**
-- 10 AI primitives for configuring agent behavior
+- 9 AI primitives for configuring agent behavior
 - Provider comparison (GitHub Copilot vs Claude Code)
 - Config file locations and hierarchy
 - Skills Tutorial
@@ -22,7 +22,7 @@ to get consistent, high-quality assistance from AI tools.
 
 # Part 1: AI Primitives
 
-The site documents 10 AI primitives organized into 3 categories:
+The site documents 9 AI primitives organized into 3 categories:
 - **Capability (Execution)**: What the AI can do
 - **Customization (Instructions)**: How to shape AI behavior
 - **Control (Safety)**: How to constrain AI actions
@@ -44,7 +44,7 @@ Multi-step execution with planning and tool use.
 
 **Prevents:** "One-shot" incomplete solutions that require manual follow-up
 
-**Combine with:** Skills, Tools, Verification
+**Combine with:** Skills & Commands, Tools, Verification
 
 **Provider Implementations:**
 
@@ -56,28 +56,29 @@ Multi-step execution with planning and tool use.
 
 ---
 
-### Skills / Workflows
+### Skills & Commands
 
-Reusable multi-step procedures for common tasks.
+Reusable workflows and prompt templates for common tasks.
 
-**What it is:** A packaged procedure the agent can follow ("triage incident", "fix failing CI", "refactor module safely"). Encodes best practices into repeatable workflows.
+**What it is:** Packaged procedures (Skills) and prompt templates (Commands) that codify best practices. Skills are multi-step workflows the agent follows. Commands are repeatable prompts invoked via slash commands.
 
 **Use when:**
 - You want reliability and repeatability across runs
+- You notice yourself rewriting the same prompt
 - The work has a known process with good best practices
-- You want to encode expert knowledge
+- A team wants consistent inputs and outputs
 
-**Prevents:** Ad-hoc flailing and missed steps in complex tasks
+**Prevents:** Ad-hoc flailing, missed steps, and prompt drift across team members
 
-**Combine with:** Agent Mode, Tools
+**Combine with:** Agent Mode, Instructions, Tools
 
 **Provider Implementations:**
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | Skill modules in skills directory | .github/skills/*/SKILL.md | full |
-| Claude Code | Skill modules in .claude directory | .claude/skills/*/SKILL.md | full |
-| Cursor | Skill modules as portable, reusable packages | .cursor/skills/*/SKILL.md | full |
+| GitHub Copilot | Skills in .github/skills/, prompts via .prompt.md files | .github/skills/*/SKILL.md, .github/prompts/*.prompt.md | full |
+| Claude Code | Skills in .claude/skills/, commands in .claude/commands/ | .claude/skills/*/SKILL.md, .claude/commands/*.md | full |
+| Cursor | Skills and custom commands as portable packages | .cursor/skills/*/SKILL.md, .cursor/commands/*.md | full |
 
 ---
 
@@ -110,53 +111,29 @@ External tools for retrieving facts and taking actions.
 
 These primitives shape how the AI behaves.
 
-### Persistent Instructions
+### Instructions
 
-A durable set of norms that define "good" for your project.
+Persistent rules and preferences at project or user level.
 
-**What it is:** A durable set of norms: tone, coding standards, constraints, safety rules, and "definition of done." These form the behavioral contract that governs all AI interactions.
+**What it is:** Durable norms that define "good" for your work: coding standards, tone, constraints, safety rules, and definition of done. Can be project-scoped (repository-wide) or user-scoped (personal preferences across all projects).
 
 **Use when:**
 - You want consistent behavior across many tasks
-- You want the AI to honor repo conventions without re-learning
+- You want the AI to honor conventions without re-learning
 - You need a "definition of done" for your project
+- You have personal coding standards you always follow
 
-**Prevents:** Stylistic drift and rework from inconsistent outputs
+**Prevents:** Stylistic drift, rework from inconsistent outputs, and repeating preferences in every project
 
-**Combine with:** Prompt Templates, Scope-Specific Instructions
-
-**Provider Implementations:**
-
-| Provider | Implementation | Location | Support |
-|----------|---------------|----------|---------|
-| GitHub Copilot | Repository-level instructions file | .github/copilot-instructions.md | full |
-| Claude Code | Project memory file with @imports | CLAUDE.md | full |
-| Cursor | Project instructions file | .cursor/instructions.md | full |
-
----
-
-### Global Instructions
-
-User-level preferences that apply across all projects.
-
-**What it is:** Personal preferences and standards that follow you across all projects. Defines your individual coding style, preferred patterns, and global behaviors.
-
-**Use when:**
-- You want consistent personal preferences across projects
-- You have coding standards you always follow
-- You want global slash commands or agents available everywhere
-
-**Prevents:** Repeating the same preferences in every project
-
-**Combine with:** Persistent Instructions, Custom Agents
+**Combine with:** Path-Scoped Rules, Skills & Commands, Custom Agents
 
 **Provider Implementations:**
 
 | Provider | Implementation | Location | Support |
 |----------|---------------|----------|---------|
-| GitHub Copilot | User-level settings in VS Code | VS Code settings.json | full |
-| Claude Code | User-level memory and config | ~/.claude/CLAUDE.md | full |
-| Cursor | User-level settings and preferences | ~/.cursor/settings.json | full |
+| GitHub Copilot | Repository-level and user-level instructions | .github/copilot-instructions.md, VS Code settings.json | full |
+| Claude Code | Project and user-level memory files | CLAUDE.md, ~/.claude/CLAUDE.md | full |
+| Cursor | Project and user-level settings | .cursor/instructions.md, ~/.cursor/settings.json | full |
 
 ---
 
@@ -185,31 +162,6 @@ Instructions that apply only to specific file paths.
 
 ---
 
-### Slash Commands
-
-Repeatable prompts invoked via / commands.
-
-**What it is:** Reusable prompts for recurring tasks like "write tests", "summarize this ADR", or "generate migration plan". Invoked via slash commands for quick access.
-
-**Use when:**
-- You notice yourself rewriting the same prompt
-- A team wants consistent inputs/outputs
-- You have a repeatable task pattern
-
-**Prevents:** Prompt drift and inconsistent outputs across team members
-
-**Combine with:** Persistent Instructions, Skills
-
-**Provider Implementations:**
-
-| Provider | Implementation | Location | Support |
-|----------|---------------|----------|---------|
-| GitHub Copilot | Prompt files invoked via / commands | .github/prompts/*.prompt.md | full |
-| Claude Code | Command files with frontmatter and $ARGUMENTS | .claude/commands/*.md | full |
-| Cursor | Custom commands with parameters and reusable workflows | .cursor/commands/*.md | full |
-
----
-
 ## Control Primitives (Safety)
 
 These primitives constrain what the AI is allowed to do.
@@ -227,7 +179,7 @@ Specialized agent personas with specific roles and permissions.
 
 **Prevents:** One-size-fits-all behavior that misses context
 
-**Combine with:** Skills, Guardrails
+**Combine with:** Skills & Commands, Guardrails
 
 **Provider Implementations:**
 
@@ -323,12 +275,10 @@ Support matrix comparing GitHub Copilot and Claude Code:
 | Primitive | Copilot | Claude |
 |-----------|---------|--------|
 | Agent Mode | ✓ Agent mode in Copilot Chat | ✓ Agentic workflows in Claude Code |
-| Skills / Workflows | ✓ Skill modules in skills directory | ✓ Skill modules in .claude directory |
+| Skills & Commands | ✓ Skills in .github/skills/, prompts via .prompt.md files | ✓ Skills in .claude/skills/, commands in .claude/commands/ |
 | Tool Integrations (MCP) | ✓ MCP servers and tool calling | ✓ MCP servers and tool calling |
-| Persistent Instructions | ✓ Repo instructions file | ✓ Project memory file with @imports |
-| Global Instructions | ✓ User-level settings in VS Code | ✓ User-level memory and config |
+| Instructions | ✓ Repository-level and user-level instructions | ✓ Project and user-level memory files |
 | Path-Scoped Rules | ✓ Instruction files with applyTo glob patterns | ✓ Rule files with globs frontmatter |
-| Slash Commands | ✓ Prompt files invoked via / commands | ✓ Command files with frontmatter and $ARGUMENTS |
 | Custom Agents | ✓ Agent definition files with roles and tool permissions | ✓ Subagent files with tools restrictions |
 | Permissions & Guardrails | ✓ Org policies and tool permissions | ✓ Allow/deny lists with pattern matching and sandbox |
 | Lifecycle Hooks | — Not available | ✓ PreToolUse, PostToolUse, Stop hooks with matchers |

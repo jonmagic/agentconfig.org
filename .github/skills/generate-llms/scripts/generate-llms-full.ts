@@ -78,7 +78,7 @@ function generateLlmsTxt(pages: readonly PageMeta[]): string {
   return `# agentconfig.org
 
 > A reference site for configuring AI coding assistants like GitHub Copilot and Claude Code.
-> Covers 10 AI primitives, provider comparison, config file locations, and tutorials for
+> Covers 9 AI primitives, provider comparison, config file locations, and tutorials for
 > skills, agent definitions, and MCP tool integrations.
 
 This file provides a table of contents. For complete content, see /llms-full.txt.
@@ -443,7 +443,7 @@ and Claude Code. The site helps developers understand and implement AI configura
 to get consistent, high-quality assistance from AI tools.
 
 **Key Topics:**
-- 10 AI primitives for configuring agent behavior
+- 9 AI primitives for configuring agent behavior
 - Provider comparison (GitHub Copilot vs Claude Code)
 - Config file locations and hierarchy
 ${topicsList}
@@ -452,7 +452,7 @@ ${topicsList}
 
 # Part 1: AI Primitives
 
-The site documents 10 AI primitives organized into 3 categories:
+The site documents 9 AI primitives organized into 3 categories:
 - **Capability (Execution)**: What the AI can do
 - **Customization (Instructions)**: How to shape AI behavior
 - **Control (Safety)**: How to constrain AI actions
