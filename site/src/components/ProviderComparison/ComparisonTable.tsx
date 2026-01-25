@@ -4,12 +4,15 @@ import { ChevronDown, Copy, Check } from 'lucide-preact'
 import { cn } from '@/lib/utils'
 import {
   comparisonData,
+  getProviderSupport,
   supportLevelLabels,
   supportLevelColors,
   supportLevelIcons,
   type ComparisonRow,
   type SupportLevel,
 } from '@/data/comparison'
+import { providers } from '@/data/providers'
+import type { Provider } from '@/data/primitives'
 
 function SupportBadge({ level }: { level: SupportLevel }): VNode {
   return (
@@ -30,9 +33,9 @@ interface ExpandedRowProps {
 }
 
 function ExpandedRow({ row }: ExpandedRowProps): VNode {
-  const [copiedLocation, setCopiedLocation] = useState<'copilot' | 'claude' | 'cursor' | 'codex' | null>(null)
+  const [copiedLocation, setCopiedLocation] = useState<Provider | null>(null)
 
-  const handleCopy = async (provider: 'copilot' | 'claude' | 'cursor' | 'codex', location: string) => {
+  const handleCopy = async (provider: Provider, location: string) => {
     try {
       await navigator.clipboard.writeText(location)
       setCopiedLocation(provider)
@@ -44,119 +47,39 @@ function ExpandedRow({ row }: ExpandedRowProps): VNode {
 
   return (
     <tr className="bg-secondary/30">
-      <td colSpan={5} className="px-4 py-4">
+      <td colSpan={providers.length + 1} className="px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Copilot details */}
-          <div className="flex flex-col gap-2">
-            <h4 className="text-sm font-semibold text-foreground">GitHub Copilot</h4>
-            <p className="text-sm text-muted-foreground flex-1">{row.copilot.implementation}</p>
-            <div className="flex items-center gap-2 mt-auto">
-              <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono text-foreground border border-border">
-                {row.copilot.location}
-              </code>
-              <button
-                onClick={() => { void handleCopy('copilot', row.copilot.location) }}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors shrink-0',
-                  'focus:outline-none focus:ring-2 focus:ring-ring',
-                  copiedLocation === 'copilot'
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200'
-                    : 'bg-background border border-border hover:bg-secondary text-muted-foreground'
-                )}
-                aria-label={copiedLocation === 'copilot' ? 'Copied!' : 'Copy location'}
-              >
-                {copiedLocation === 'copilot' ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Claude details */}
-          <div className="flex flex-col gap-2">
-            <h4 className="text-sm font-semibold text-foreground">Claude Code</h4>
-            <p className="text-sm text-muted-foreground flex-1">{row.claude.implementation}</p>
-            <div className="flex items-center gap-2 mt-auto">
-              <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono text-foreground border border-border">
-                {row.claude.location}
-              </code>
-              <button
-                onClick={() => { void handleCopy('claude', row.claude.location) }}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors shrink-0',
-                  'focus:outline-none focus:ring-2 focus:ring-ring',
-                  copiedLocation === 'claude'
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200'
-                    : 'bg-background border border-border hover:bg-secondary text-muted-foreground'
-                )}
-                aria-label={copiedLocation === 'claude' ? 'Copied!' : 'Copy location'}
-              >
-                {copiedLocation === 'claude' ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Cursor details */}
-          <div className="flex flex-col gap-2">
-            <h4 className="text-sm font-semibold text-foreground">Cursor</h4>
-            <p className="text-sm text-muted-foreground flex-1">{row.cursor.implementation}</p>
-            <div className="flex items-center gap-2 mt-auto">
-              <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono text-foreground border border-border">
-                {row.cursor.location}
-              </code>
-              <button
-                onClick={() => { void handleCopy('cursor', row.cursor.location) }}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors shrink-0',
-                  'focus:outline-none focus:ring-2 focus:ring-ring',
-                  copiedLocation === 'cursor'
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-background border border-border hover:bg-secondary text-muted-foreground'
-                )}
-                aria-label={copiedLocation === 'cursor' ? 'Copied!' : 'Copy location'}
-              >
-                {copiedLocation === 'cursor' ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Codex details */}
-          <div className="flex flex-col gap-2">
-            <h4 className="text-sm font-semibold text-foreground">OpenAI Codex</h4>
-            <p className="text-sm text-muted-foreground flex-1">{row.codex.implementation}</p>
-            <div className="flex items-center gap-2 mt-auto">
-              <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono text-foreground border border-border">
-                {row.codex.location}
-              </code>
-              <button
-                onClick={() => { void handleCopy('codex', row.codex.location) }}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors shrink-0',
-                  'focus:outline-none focus:ring-2 focus:ring-ring',
-                  copiedLocation === 'codex'
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-background border border-border hover:bg-secondary text-muted-foreground'
-                )}
-                aria-label={copiedLocation === 'codex' ? 'Copied!' : 'Copy location'}
-              >
-                {copiedLocation === 'codex' ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
+          {providers.map((provider) => {
+            const support = getProviderSupport(row, provider.id)
+            return (
+              <div key={provider.id} className="flex flex-col gap-2">
+                <h4 className="text-sm font-semibold text-foreground">{provider.name}</h4>
+                <p className="text-sm text-muted-foreground flex-1">{support.implementation}</p>
+                <div className="flex items-center gap-2 mt-auto">
+                  <code className="flex-1 text-xs bg-background px-2 py-1.5 rounded font-mono text-foreground border border-border">
+                    {support.location}
+                  </code>
+                  <button
+                    onClick={() => { void handleCopy(provider.id, support.location) }}
+                    className={cn(
+                      'p-1.5 rounded-md transition-colors shrink-0',
+                      'focus:outline-none focus:ring-2 focus:ring-ring',
+                      copiedLocation === provider.id
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200'
+                        : 'bg-background border border-border hover:bg-secondary text-muted-foreground'
+                    )}
+                    aria-label={copiedLocation === provider.id ? 'Copied!' : 'Copy location'}
+                  >
+                    {copiedLocation === provider.id ? (
+                      <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </td>
     </tr>
@@ -179,30 +102,14 @@ export function ComparisonTable(): VNode {
               <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                 Primitive
               </th>
-              <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">🤖</span>
-                  GitHub Copilot
-                </span>
-              </th>
-              <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">🧠</span>
-                  Claude Code
-                </span>
-              </th>
-              <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">✨</span>
-                  Cursor
-                </span>
-              </th>
-              <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">⚡</span>
-                  OpenAI Codex
-                </span>
-              </th>
+              {providers.map((provider) => (
+                <th key={provider.id} className="px-4 py-3 text-center text-sm font-semibold text-foreground">
+                  <span className="inline-flex items-center gap-2">
+                    <span aria-hidden="true">{provider.icon}</span>
+                    {provider.name}
+                  </span>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -234,18 +141,11 @@ export function ComparisonTable(): VNode {
                       </span>
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-center">
-                    <SupportBadge level={row.copilot.level} />
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <SupportBadge level={row.claude.level} />
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <SupportBadge level={row.cursor.level} />
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <SupportBadge level={row.codex.level} />
-                  </td>
+                  {providers.map((provider) => (
+                    <td key={provider.id} className="px-4 py-3 text-center">
+                      <SupportBadge level={getProviderSupport(row, provider.id).level} />
+                    </td>
+                  ))}
                 </tr>
                 {expandedRow === row.primitiveId && (
                   <ExpandedRow key={`${row.primitiveId}-expanded`} row={row} />

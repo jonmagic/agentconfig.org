@@ -311,3 +311,9 @@ export const supportLevelIcons: Record<SupportLevel, string> = {
   partial: '◐',
   none: '—',
 }
+
+import type { Provider } from './primitives'
+
+export function getProviderSupport(row: ComparisonRow, providerId: Provider): ProviderSupport {
+  return row[providerId]
+}

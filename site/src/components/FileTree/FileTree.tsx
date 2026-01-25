@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks'
 import type { VNode } from 'preact'
 import { cn } from '@/lib/utils'
 import { trees, globalTrees, type Provider, type FileNode } from '@/data/fileTree'
+import { providers } from '@/data/providers'
 import { TreeNode } from './TreeNode'
 
 export interface FileTreeProps {
@@ -12,13 +13,6 @@ export interface FileTreeProps {
   /** Additional CSS classes */
   className?: string | undefined
 }
-
-const providers: { id: Provider; label: string; icon: string }[] = [
-  { id: 'copilot', label: 'GitHub Copilot', icon: '🤖' },
-  { id: 'claude', label: 'Claude Code', icon: '🧠' },
-  { id: 'cursor', label: 'Cursor', icon: '➤' },
-  { id: 'codex', label: 'OpenAI Codex', icon: '⚡' },
-]
 
 export function FileTree({
   selectedId,
@@ -54,7 +48,7 @@ export function FileTree({
             )}
           >
             <span aria-hidden="true">{provider.icon}</span>
-            {provider.label}
+            {provider.name}
           </button>
         ))}
       </div>

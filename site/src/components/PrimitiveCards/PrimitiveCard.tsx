@@ -3,6 +3,7 @@ import type { VNode } from 'preact'
 import { ChevronDown, Copy, Check, Shield, Zap, Wrench, FileText } from 'lucide-preact'
 import { cn } from '@/lib/utils'
 import { type Primitive, type Provider } from '@/data/primitives'
+import { providers } from '@/data/providers'
 
 export interface PrimitiveCardProps {
   /** The primitive to display */
@@ -31,12 +32,7 @@ const supportBadgeColors = {
   diy: 'bg-gray-100 text-gray-700 dark:bg-gray-800/50 dark:text-gray-200',
 }
 
-const providerLabels: Record<Provider, string> = {
-  copilot: 'GitHub Copilot',
-  claude: 'Claude Code',
-  cursor: 'Cursor',
-  codex: 'OpenAI Codex',
-}
+const providerMap = Object.fromEntries(providers.map(p => [p.id, p]))
 
 export function PrimitiveCard({ primitive, className }: PrimitiveCardProps): VNode {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -172,7 +168,7 @@ export function PrimitiveCard({ primitive, className }: PrimitiveCardProps): VNo
                 >
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <span className="text-sm font-medium text-foreground">
-                      {providerLabels[impl.provider]}
+                      {providerMap[impl.provider]?.name ?? impl.provider}
                     </span>
                     <span
                       className={cn(
