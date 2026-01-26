@@ -27,16 +27,8 @@ export interface ComparisonRow {
 }
 
 /**
- * Map support level from primitives.ts to comparison.ts format
- * Primitives use 'diy' for manual implementation, comparison uses 'none'
- */
-function mapSupportLevel(support: 'full' | 'partial' | 'diy'): SupportLevel {
-  if (support === 'diy') return 'partial'
-  return support
-}
-
-/**
- * Get provider implementation from primitives array, with fallback defaults
+ * Comparison data is derived directly from primitives.ts
+ * No mapping needed - support levels are already in the correct format
  */
 function getProviderImplementation(
   implementations: ProviderImplementation[],
@@ -45,7 +37,7 @@ function getProviderImplementation(
   const impl = implementations.find((i: ProviderImplementation) => i.provider === provider)
   if (impl) {
     return {
-      level: mapSupportLevel(impl.support),
+      level: impl.support as SupportLevel,
       implementation: impl.implementation,
       location: impl.location,
     }
