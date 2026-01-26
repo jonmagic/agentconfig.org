@@ -188,7 +188,7 @@ export const primitives: Primitive[] = [
       },
       {
         provider: 'codex',
-        implementation: 'Project AGENTS.md file with hierarchical loading',
+        implementation: 'Project AGENTS.md with hierarchical loading',
         location: 'AGENTS.md',
         support: 'full',
       },
