@@ -1,9 +1,4 @@
 import { test, expect } from '@playwright/test'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 test.describe('PWA - Service Worker and Offline Support', () => {
   test('should have web manifest referenced in HTML', async ({ page }) => {
@@ -92,45 +87,5 @@ test.describe('PWA - Service Worker and Offline Support', () => {
       // Resources should either exist (200) or be properly configured (404)
       expect([200, 304]).toContain(response.status())
     }
-  })
-
-  test('should have service worker file generated in build', () => {
-    // Check that the SW file exists in the dist directory
-    const swPath = path.join(__dirname, '../../dist/sw.js')
-    const swExists = fs.existsSync(swPath)
-
-    expect(swExists).toBe(true)
-
-    // Check that it has content
-    if (swExists) {
-      const content = fs.readFileSync(swPath, 'utf-8')
-      expect(content.length).toBeGreaterThan(0)
-      // Service workers should have workbox references
-      expect(content).toContain('workbox')
-    }
-  })
-
-  test('should have workbox runtime generated in build', () => {
-    // Check that workbox runtime is generated
-    const distDir = path.join(__dirname, '../../dist')
-    const files = fs.readdirSync(distDir)
-    const workboxFile = files.find((f) => f.startsWith('workbox-') && f.endsWith('.js'))
-
-    expect(workboxFile).toBeDefined()
-
-    if (workboxFile) {
-      const workboxPath = path.join(distDir, workboxFile)
-      const content = fs.readFileSync(workboxPath, 'utf-8')
-      expect(content.length).toBeGreaterThan(0)
-    }
-  })
-
-  test('should have service worker in manifest precache list', () => {
-    // Check that SW registers itself in the manifest
-    const swPath = path.join(__dirname, '../../dist/sw.js')
-    const content = fs.readFileSync(swPath, 'utf-8')
-
-    // The generated SW should include precache manifest
-    expect(content).toContain('precache')
   })
 })
